@@ -1,0 +1,99 @@
+/* עיצוב כללי */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Trebuchet MS", sans-serif;
+  background: linear-gradient(#000000, #303030);
+  color: #fff;
+}
+
+/* עיצוב הקונטיינר המרכזי */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 25px;
+  background: #1f242d;
+}
+
+/* עיצוב הטופס */
+form {
+  width: 400px;
+  padding: 30px;
+  background: #a388a9;
+  border-radius: 10px;
+  filter: drop-shadow(0 0 10px #87d3ec);
+}
+
+form h1 {
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+/* עיצוב השדות */
+.input-box {
+  margin-bottom: 15px;
+}
+
+.input-box span {
+  display: block;
+  margin-bottom: 5px;
+  color: #ccc;
+}
+
+.input-box input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  background-color: #f7f7f7;
+}
+
+/* עיצוב הכפתור */
+form .btn {
+  width: 100%;
+  padding: 12px;
+  background: #c7c1f3;
+  border: none;
+  border-radius: 6px;
+  font-size: 17px;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+form .btn:hover {
+  background: #492efc;
+  filter: drop-shadow(0 0 5px #fdfafa);
+}
+
+/* עיצוב שגיאות */
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* רספונסיביות */
+@media (max-width: 500px) {
+  form {
+    width: 100%;
+    padding: 20px;
+  }
+
+  form h1 {
+    font-size: 22px;
+  }
+
+  .input-box input {
+    font-size: 14px;
+  }
+}

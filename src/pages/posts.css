@@ -1,0 +1,237 @@
+/* עיצוב כללי */
+body {
+  font-family: "Trebuchet MS", sans-serif;
+  background: linear-gradient(#f0f0f0, #e6e6e6);
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* הקונטיינר הראשי */
+.wall-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f0f2f5;
+}
+
+/* הקונטיינר העליון להוספת פוסט */
+.upper-post-container {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+}
+
+/* שדה הכנסת טקסט */
+.subject-field,
+.text-erea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  background-color: #fff;
+  color: #333;
+}
+
+/* כפתור פרסום */
+.post-button {
+  width: 100%;
+  padding: 12px;
+  background: #1877f2;
+  border: none;
+  border-radius: 6px;
+  font-size: 17px;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.post-button:hover {
+  background: #155ec3;
+}
+
+/* קונטיינר הפוסטים */
+.posts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 600px;
+}
+
+/* עיצוב של כל פוסט */
+.post-item {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #ddd;
+}
+
+.post-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.post-item h3 {
+  font-size: 18px;
+  color: #1877f2;
+  margin-bottom: 10px;
+}
+
+.post-item p {
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* עיצוב כפתור לייק */
+/* עיצוב כפתור לייק */
+.likeBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.likeBtn button {
+  background: #e4e6eb;
+  color: #050505;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.likeBtn button:hover {
+  background: #d8dadf;
+}
+
+.likeBtn p {
+  margin: 0;
+  color: #606770;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* תגובות */
+.comment-section {
+  margin-top: 15px;
+}
+
+.comment-field {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #f7f7f7;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.comments p {
+  font-size: 14px;
+  color: #606770;
+  margin-bottom: 5px;
+  padding: 5px 10px;
+  background: #f0f2f5;
+  border-radius: 6px;
+}
+header {
+  background-color: #1e293b;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.menu-dropdown {
+  background-color: #374151;
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.menu-item {
+  display: block;
+  color: #fff;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.menu-item:hover {
+  background-color: #4b5563;
+}
+/* עיצוב קופסת התגובות עם גלילה פנימית */
+.comments-container {
+  max-height: 200px; /* גובה קבוע לאזור התגובות */
+  overflow-y: auto; /* יצירת גלילה פנימית */
+  border: 1px solid #ddd; /* מסגרת עדינה */
+  border-radius: 6px;
+  padding: 10px;
+  background: #f0f2f5;
+  margin-top: 10px;
+}
+/* קונטיינר לתגובות */
+
+/* כאשר לוחצים על הצג עוד */
+.comments-container.expanded {
+  max-height: 200px; /* גובה מוגדל */
+  overflow-y: auto; /* גלילה פנימית */
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px;
+  background: #f0f2f5;
+}
+
+/* כל תגובה בתוך הרשימה */
+.comment-item {
+  padding: 8px;
+  background: #fff;
+  border-radius: 5px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+}
+
+/* רספונסיביות */
+@media (max-width: 500px) {
+  .upper-post-container,
+  .post-item {
+    padding: 15px;
+  }
+
+  .subject-field,
+  .text-erea {
+    font-size: 14px;
+  }
+}
