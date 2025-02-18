@@ -1,0 +1,41 @@
+.header-container {
+  background-color: #1e293b;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.menu-dropdown {
+  background-color: #374151;
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.menu-item {
+  display: block;
+  color: #fff;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.menu-item:hover {
+  background-color: #4b5563;
+}

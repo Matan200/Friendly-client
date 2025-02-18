@@ -62,7 +62,6 @@ const PostsPage = () => {
       return;
     }
     try {
-      alert(userId);
       const response = await axios.post("http://localhost:4000/api/posts", {
         editor: userId,
         subject: newSubject,
@@ -171,29 +170,6 @@ const PostsPage = () => {
 
   return (
     <div>
-      {/* תפריט ראשי */}
-      <header>
-        <button className="menu-toggle" onClick={toggleMenu}>
-          ☰ Menu
-        </button>
-        {isMenuOpen && (
-          <div className="menu-dropdown">
-            <button onClick={handleFilter} className="menu-item">
-              Filter
-            </button>
-            <button onClick={handleDonate} className="menu-item">
-              Donate
-            </button>
-            <button onClick={handleProfile} className="menu-item">
-              My Profile
-            </button>
-            <button onClick={handleExtraInfo} className="menu-item">
-              Extra Info
-            </button>
-          </div>
-        )}
-      </header>
-
       {/* אזור הפוסטים */}
       <div className="wall-container">
         <div className="upper-post-container">

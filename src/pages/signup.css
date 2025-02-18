@@ -97,3 +97,56 @@ form .btn:hover {
     font-size: 14px;
   }
 }
+.gender-radio {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: row; /* הצגת הפריטים בשורה */
+  justify-content: space-between; /* פיזור הפריטים באופן אחיד */
+  gap: 20px 20px; /* הוספת ריווח בין הפריטים */
+}
+alert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #a21d1d;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  width: 300px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+.gender-radio label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #fff;
+}
+
+.gender-radio input {
+  margin-right: 10px;
+  transform: scale(1.2); /* הגדלת כפתור הבחירה */
+  accent-color: #492efc; /* צבע מותאם לכפתור */
+}
+
+.gender-radio label:hover {
+  color: #c7c1f3; /* שינוי צבע הטקסט בהצבעה */
+}
+/* עיצוב למרחק בין שדה ההזנה לבין כפתור העזרה */
+.input-with-tooltip {
+  display: flex;
+  align-items: center;
+}
+
+input {
+  flex: 1; /* מאפשר לשדה ההזנה למלא את הרוחב */
+}
+
+/* עיצוב לאייקון עזרה */
+.MuiIconButton-root {
+  margin-left: 8px; /* מרווח בין שדה ההזנה לבין האייקון */
+}

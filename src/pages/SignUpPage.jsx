@@ -1,21 +1,38 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Button } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline"; // Import help icon
 import "./signup.css";
+
 const SignUpPage = () => {
-  // State for form data and errors
   const [formData, setFormData] = useState({
-    userName: "",
     email: "",
-    password: "",
+    idnumber: "",
     birthdate: "",
+    gender: "",
+    address: "",
     school: "",
   });
+  const [popupData, setPopupData] = useState({
+    userName: "",
+    password: "",
+  }); // שדות לחלונית ה-Popup
+  const [acceptTerms, setAcceptTerms] = useState(false);
   const [errors, setErrors] = useState({});
   const [isUnderage, setIsUnderage] = useState(false);
+  const [showPopup, setShowPopup] = useState(false); // מצב להצגת ה-Popup
   const navigate = useNavigate();
-  // Handle input changes
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -25,52 +42,78 @@ const SignUpPage = () => {
     if (name === "birthdate") {
       const birth_date = new Date(value);
       const age = new Date().getFullYear() - birth_date.getFullYear();
-      setIsUnderage(age < 18); // אם הגיל מתחת ל-18, מגדיר isUnderage ל-true
+      setIsUnderage(age < 18);
     }
   };
 
-  // Function to check if email already exists
-  const checkIfEmailExists = async (email) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:4000/api/users/check-email",
-        { email }
-      );
-      return response.data.exists;
-    } catch (error) {
-      console.error("Error checking email:", error);
-      return false;
-    }
+  const handlePopupChange = (e) => {
+    const { name, value } = e.target;
+    setPopupData({
+      ...popupData,
+      [name]: value,
+    });
   };
 
-  // Handle form submission
-  const handleCreateUser = async (e) => {
-    e.preventDefault();
-    setErrors({});
+  const validateFields = () => {
     const newErrors = {};
-    if (!formData.userName.trim()) newErrors.userName = "Name is required";
     if (!formData.email.trim()) newErrors.email = "Email is required";
-    if (!formData.password.trim()) newErrors.password = "Password is required";
+    if (!formData.idnumber.trim()) newErrors.idnumber = "Id is required";
+    else if (formData.idnumber.length !== 9 || isNaN(formData.idnumber)) {
+      newErrors.idnumber = "תעודת זהות חייבת להכיל בדיוק 9 ספרות";
+    }
+
+    // if (!popupData.password.trim()) {
+    //   newErrors.password = "Password is required";
+    // } else if (popupData.password.length < 9 || isNaN(popupData.password)) {
+    //   newErrors.password = "סיסמא חייבת להכיל לפחות 9 ספרות";
+    // }
+    if (!formData.gender.trim()) newErrors.gender = "Gender is required";
+    if (!formData.address.trim()) newErrors.address = "Address is required";
     if (!formData.birthdate.trim())
       newErrors.birthdate = "Birthdate is required";
     if (isUnderage && !formData.school.trim())
       newErrors.school = "School name is required for underage users";
+    if (!acceptTerms) newErrors.acceptTerms = "You must accept the terms";
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // מחזיר true אם אין שגיאות
+  };
+
+  const handleCreateUser = async () => {
+    if (!popupData.userName.trim() || !popupData.password.trim()) {
+      setErrors({
+        userName: !popupData.userName.trim() ? "User Name is required" : "",
+        password: !popupData.password.trim() ? "Password is required" : "",
+      });
+      return; // עצור את הפעולה אם אחד מהשדות ריקים
     }
 
+    // בדיקה אם הסיסמא עומדת בדרישות
+    if (popupData.password.length < 9 || isNaN(popupData.password)) {
+      setErrors({
+        password: "סיסמא חייבת להכיל לפחות 9 ספרות",
+      });
+      return; // עצור את הפעולה אם הסיסמא לא עומדת בדרישות
+    }
+
+    // if (!popupData.userName.trim() || !popupData.password.trim()) {
+    //   setErrors({
+    //     userName: !popupData.userName.trim() ? "User Name is required" : "",
+    //     password: !popupData.password.trim() ? "Password is required" : "",
+    //   });
+    //   return;
+    // }
+
     try {
-      const res = await axios.post(
-        "http://localhost:4000/api/users/signup",
-        formData
-      );
+      const res = await axios.post("http://localhost:4000/api/users/signup", {
+        ...formData,
+        ...popupData,
+      });
       if (res.data.existMail) {
         setErrors({ email: res.data.message });
       } else {
-        console.log("User created:", res.data);
         alert("User successfully created!");
+        localStorage.setItem("editor", formData.email);
         navigate("/posts");
       }
     } catch (error) {
@@ -78,43 +121,115 @@ const SignUpPage = () => {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validateFields()) {
+      setShowPopup(true);
+    }
+  };
+
+  const handlePopupSubmit = () => {
+    handleCreateUser();
+
+    //setShowPopup(false);
+  };
+
   return (
     <div className="container">
-      <form onSubmit={handleCreateUser}>
+      <form onSubmit={handleSubmit}>
         <h1>Sign Up</h1>
         <div className="input-box">
-          <span>Name</span>
-          <input
-            type="text"
-            name="userName"
-            placeholder="Enter your name"
-            value={formData.userName}
-            onChange={handleChange}
-          />
-          {errors.userName && <p className="error">{errors.userName}</p>}
-        </div>
-        <div className="input-box">
           <span>Email</span>
-          <input
-            type="text"
-            name="email"
-            placeholder="Enter your email"
-            value={formData.email}
-            onChange={handleChange}
-          />
+          <div className="input-with-tooltip">
+            <input
+              type="text"
+              name="email"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+            <Tooltip title="Please enter your email address" arrow>
+              <IconButton>
+                <HelpOutlineIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
           {errors.email && <p className="error">{errors.email}</p>}
         </div>
+
         <div className="input-box">
-          <span>Password</span>
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter your password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-          {errors.password && <p className="error">{errors.password}</p>}
+          <span>Id</span>
+          <div className="input-with-tooltip">
+            <input
+              type="text"
+              name="idnumber"
+              placeholder="Enter your id"
+              value={formData.idnumber}
+              onChange={handleChange}
+            />
+            <Tooltip title="Please enter your 9-digit ID number" arrow>
+              <IconButton>
+                <HelpOutlineIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
+          {errors.idnumber && <p className="error">{errors.idnumber}</p>}
         </div>
+
+        <div className="gender-radio">
+          <span>Gender</span>
+          <label>
+            <input
+              type="radio"
+              name="gender"
+              value="male"
+              checked={formData.gender === "male"}
+              onChange={handleChange}
+            />
+            male
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="gender"
+              value="female"
+              checked={formData.gender === "female"}
+              onChange={handleChange}
+            />
+            female
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="gender"
+              value="other"
+              checked={formData.gender === "other"}
+              onChange={handleChange}
+            />
+            other
+          </label>
+          {errors.gender && <p className="error">{errors.gender}</p>}
+        </div>
+
+        <div className="input-box">
+          <span>Address</span>
+          <div className="input-with-tooltip">
+            <input
+              type="text"
+              name="address"
+              placeholder="Enter your address"
+              value={formData.address}
+              onChange={handleChange}
+            />
+            <Tooltip title="Please enter your home address" arrow>
+              <IconButton>
+                <HelpOutlineIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
+          {errors.address && <p className="error">{errors.address}</p>}
+        </div>
+
         <div className="input-box">
           <span>Date of Birth</span>
           <input
@@ -125,6 +240,7 @@ const SignUpPage = () => {
           />
           {errors.birthdate && <p className="error">{errors.birthdate}</p>}
         </div>
+
         {isUnderage && (
           <div className="input-box">
             <span>School Name</span>
@@ -138,10 +254,71 @@ const SignUpPage = () => {
             {errors.school && <p className="error">{errors.school}</p>}
           </div>
         )}
+
+        <div className="terms-container">
+          <label htmlFor="terms">
+            <div className="terms-box">
+              <p>
+                כללי – בהרשמתך למערכת, הנך מסכים לתנאי התקנון ומתחייב לפעול
+                בהתאם לכללי השימוש.
+              </p>
+            </div>
+          </label>
+          <div className="accept-terms">
+            <input
+              type="checkbox"
+              id="terms"
+              checked={acceptTerms}
+              onChange={(e) => setAcceptTerms(e.target.checked)}
+            />
+            <label htmlFor="terms">מאשר/ת שקראתי</label>
+            {errors.acceptTerms && (
+              <p className="error">{errors.acceptTerms}</p>
+            )}
+          </div>
+        </div>
+
         <Button type="submit" className="btn">
           Sign Up
         </Button>
       </form>
+
+      {/* Popup Dialog */}
+      <Dialog open={showPopup} onClose={() => setShowPopup(false)}>
+        <DialogTitle>Complete Registration</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="User Name"
+            name="userName"
+            fullWidth
+            value={popupData.userName}
+            onChange={handlePopupChange}
+            // error={!!errors.userName}
+            helperText={errors.userName}
+            margin="dense"
+          />
+          <TextField
+            label="Password"
+            name="password"
+            type="password"
+            fullWidth
+            value={popupData.password}
+            onChange={handlePopupChange}
+            // error={!!errors.password}
+            helperText={errors.password}
+            margin="dense"
+          />
+          {errors.password && <p className="error">{errors.password}</p>}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handlePopupSubmit} color="primary">
+            Submit
+          </Button>
+          <Button onClick={() => setShowPopup(false)} color="secondary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

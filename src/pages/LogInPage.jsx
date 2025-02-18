@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./login.css";
 import { useState } from "react";
 import axios from "axios";
+import AccessibilityButton from "./AccessibilityButton";
 
 const LogInPage = () => {
   const [formLogin, setFormLogin] = useState({
@@ -43,42 +44,47 @@ const LogInPage = () => {
   };
 
   return (
-    <div className="container">
-      <form onSubmit={handleLogin}>
-        <h3 className="allign">Log In</h3>
-        {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
-        <div className="input-box">
-          <span>Email</span>
-          <input
-            type="text"
-            name="email"
-            placeholder="Enter your email"
-            value={formLogin.email}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="input-box">
-          <span>Password</span>
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter your password"
-            value={formLogin.password}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit" className="btn">
-          Log In
-        </button>
-        <p className="allign">Don't have an account?</p>
-        <div className="allign">
-          <Link to="/signup">
-            <Button variant="contained" color="primary">
-              Sign Up
-            </Button>
-          </Link>
-        </div>
-      </form>
+    <div>
+      <AccessibilityButton />
+      <div className="container">
+        <form onSubmit={handleLogin}>
+          <h3 className="allign">Log In</h3>
+          {error && (
+            <p style={{ color: "red", textAlign: "center" }}>{error}</p>
+          )}
+          <div className="input-box">
+            <span>Email</span>
+            <input
+              type="text"
+              name="email"
+              placeholder="Enter your email"
+              value={formLogin.email}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="input-box">
+            <span>Password</span>
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              value={formLogin.password}
+              onChange={handleChange}
+            />
+          </div>
+          <button type="submit" className="btn">
+            Log In
+          </button>
+          <p className="allign">Don't have an account?</p>
+          <div className="allign">
+            <Link to="/signup">
+              <Button variant="contained" color="primary">
+                Sign Up
+              </Button>
+            </Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
