@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import "./menu.css"; // קובץ עיצוב לתפריט
 import { useLocation, useNavigate } from "react-router-dom";
 
 const MenuBar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -13,49 +12,33 @@ const MenuBar = () => {
   if (hiddenMenuRoutes.includes(location.pathname)) {
     return null; // לא מציג את התפריט
   }
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+  const logoutFunc = () => {
+    localStorage.removeItem("editor"); 
+    navigate("/"); 
   };
-
-  const handleFilter = () => {
-    alert("Filter options coming soon!");
-  };
-
-  const handleDonate = () => {
-    alert("Redirecting to Donate page...");
-  };
-
-  const handleProfile = () => {
-    alert("Opening My Profile...");
-  };
-
-  const handleEvents = () => {
-    navigate("/events");
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   return (
     <header className="header-container">
-      <button className="menu-toggle" onClick={toggleMenu}>
-        ☰ Menu
-      </button>
-      {isMenuOpen && (
-        <div className="menu-dropdown">
-          <button onClick={handleFilter} className="menu-item">
-            Filter
-          </button>
-          <button onClick={handleDonate} className="menu-item">
-            Donate
-          </button>
-          <button onClick={handleProfile} className="menu-item">
-            My Profile
-          </button>
-          <button onClick={handleEvents} className="menu-item">
-            events Info
-          </button>
-        </div>
-      )}
+      <div className="menu-title">FRIENDLY</div>
+      <nav className="menu-nav">
+        <button onClick={() => navigate("/posts")} className="menu-item">
+          Posts
+        </button>
+        <button onClick={() => navigate("/events")} className="menu-item">
+          Events
+        </button>
+        <button onClick={() => navigate("/profile")} className="menu-item">
+          My Profile
+        </button>
+        <button onClick={() => alert("Filter options coming soon!")} className="menu-item">
+          Filter
+        </button>
+        <button onClick={() => alert("Redirecting to Donate page...")} className="menu-item">
+          Donate
+        </button>
+        <button onClick={logoutFunc} className="logout-button">
+          Logout
+        </button>
+      </nav>
     </header>
   );
 };

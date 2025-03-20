@@ -119,7 +119,7 @@ const PostsPage = () => {
     //const reeees = getUserId(userId);
 
     const comment = newComment[postId];
-    //alert(userId);
+    alert(userId);
     if (!comment) return;
 
     try {
@@ -216,7 +216,7 @@ const PostsPage = () => {
                   </Button>
                   <p>{post.likes} Likes</p>
                 </div>
-
+                
                 <div className="comments">
                   {post.comments
                     ?.slice(
@@ -243,6 +243,10 @@ const PostsPage = () => {
                   )}
                 </div>
               </div>
+              <div className="report-button">
+              <Button style={{ color: "red" }}>REPORT</Button>
+
+                  </div>
             </div>
           ))}
         </div>

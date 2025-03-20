@@ -1,103 +1,84 @@
-/* כללי */
-body {
-  margin: 0;
+.events-container {
+  direction: rtl;
+  text-align: right;
+  color: #333; /* טקסט כהה */
+  font-family: Arial, sans-serif;
+}
+.header-event{
+  color: #fffafa;
+}
+.events-list {
+  list-style: none;
   padding: 0;
-  font-family: "Trebuchet MS", sans-serif;
 }
 
-/* דף האירועים */
-.events-page {
-  background: linear-gradient(#e64141, #e6e6e6); /* או כל רקע שתרצה */
-  min-height: 100vh;
+.event-item {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 20px;
-}
-
-/* עיצוב הכפתור */
-.event-button {
-  padding: 10px 20px;
-  background-color: #4caf50;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  margin: 20px;
-}
-
-.event-button:hover {
-  background-color: #45a049;
-}
-
-/* עיצוב הפופאפ */
-.popup {
-  display: block;
-  position: fixed;
-  z-index: 1000;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #8a4dff;
-  width: 400px;
-  padding: 20px;
+  background: #f5f5f5;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* כפתור סגירה */
-.close-button {
-  color: white;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-  position: absolute;
-  top: 10px;
-  right: 20px;
-}
-
-.close-button:hover {
-  color: #ff6347;
-}
-
-/* עיצוב הטופס */
-form {
+.event-header {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
-form label {
-  margin-bottom: 5px;
-  font-size: 14px;
+.event-info {
+  flex: 1;
 }
 
-form input,
-form textarea {
-  margin-bottom: 15px;
-  padding: 10px;
-  font-size: 14px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  background-color: #333;
+.event-image {
+  position: relative;
+  width: 120px;
+}
+
+.event-image img {
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+/* תאריך צף */
+.event-date-box {
+  position: absolute;
+  top: 10px; /* לא יצוף מעל תפריט */
+  right: 10px; /* מיקום נכון */
+  background: #2c6e49;
   color: white;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+  z-index: 10; /* לוודא שהתאריך לא יצוף מעל תפריטים */
 }
 
-form input:focus,
-form textarea:focus {
-  border-color: #4caf50;
+.event-day {
+  font-size: 18px;
 }
 
-form button {
-  padding: 10px;
+.event-month {
+  font-size: 14px;
+}
+
+.event-button {
   background-color: #4caf50;
   color: white;
   border: none;
-  border-radius: 5px;
+  padding: 8px 12px;
   cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
 }
 
-form button:hover {
-  background-color: #45a049;
+.event-button.cancel {
+  background-color: #d9534f;
+}
+.events-container {
+  padding-top: 80px; /* דוחף את התוכן כלפי מטה כדי לא להיות מוסתר */
 }
