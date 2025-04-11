@@ -82,3 +82,16 @@
 .events-container {
   padding-top: 80px; /* דוחף את התוכן כלפי מטה כדי לא להיות מוסתר */
 }
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+  justify-content: center;
+}
+
+.filters input,
+.filters select {
+  padding: 8px;
+  font-size: 14px;
+}

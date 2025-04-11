@@ -1,0 +1,28 @@
+.profile-container {
+  max-width: 500px;
+  margin: 80px auto; /* יותר רווח מהחלק העליון */
+  background-color: #d12424;
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  direction: rtl;
+  text-align: right;
+  color: white; /* טקסט לבן */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.profile-container h2 {
+  margin-bottom: 25px;
+  font-size: 24px;
+  font-weight: bold;
+  border-bottom: 2px solid white;
+  padding-bottom: 10px;
+}
+
+.profile-container p {
+  margin: 10px 0;
+  font-size: 18px;
+  line-height: 1.6;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 6px;
+}

@@ -1,6 +1,12 @@
 .App {
   text-align: center;
 }
+/* נניח שהגובה של ה-Navbar שלך הוא 70px */
+.main-container {
+  padding-top: 100px; /* מרווח מתחת ל-navbar */
+  padding-left: 20px;
+  padding-right: 20px;
+}
 
 .App-logo {
   height: 40vmin;

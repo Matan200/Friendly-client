@@ -2,139 +2,212 @@ import "./events.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Button } from "@mui/material";
-import Popup from "./Popup"; // ייבוא הפופאפ
 
 const EventsPage = () => {
   const [events, setEvents] = useState([]);
-  const [popupOpen, setPopupOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [participatedEvents, setParticipatedEvents] = useState([]);
+  const [filteredEvents, setFilteredEvents] = useState([]);
+  const [userObjectId, setUserObjectId] = useState("");
   const [expandedEvent, setExpandedEvent] = useState(null);
-  const userId = localStorage.getItem("editor");
+  const userEmail = localStorage.getItem("editor");
+
+  // סינון
+  const [filterCity, setFilterCity] = useState("");
+  const [filterGender, setFilterGender] = useState("");
+  const [filterMinAge, setFilterMinAge] = useState("");
+  const [filterMaxAge, setFilterMaxAge] = useState("");
 
   useEffect(() => {
-    const fetchEvents = async () => {
+    const fetchUserAndEvents = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/events");
+        const userRes = await axios.get(`http://localhost:4000/api/users/findByEmail/${userEmail}`);
+        setUserObjectId(userRes.data._id);
 
-        console.log("אירועים שהתקבלו מהשרת:", response.data); // בדיקה
-
-        if (!response.data || response.data.length === 0) {
-          console.warn("⚠ לא נמצאו אירועים בשרת!");
-        }
-
-        // מיון האירועים לפי תאריך
-        const sortedEvents = response.data
-          .filter((event) => new Date(event.date) >= new Date()) // מסנן אירועים שהתאריך שלהם עבר
-          .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-        setEvents(sortedEvents);
-
-        const participated =
-          JSON.parse(localStorage.getItem("participatedEvents")) || [];
-        setParticipatedEvents(participated);
+        const eventsRes = await axios.get("http://localhost:4000/api/events");
+        setEvents(eventsRes.data);
+        setFilteredEvents(eventsRes.data);
       } catch (error) {
-        console.error("❌ שגיאה בטעינת האירועים:", error);
+        console.error("שגיאה בטעינת הנתונים:", error);
       }
     };
-    fetchEvents();
-  }, []);
 
-  const handleParticipate = (event) => {
-    setSelectedEvent(event);
-    setPopupOpen(true);
+    fetchUserAndEvents();
+  }, [userEmail]);
+
+  const handleParticipate = async (eventId) => {
+    try {
+      const res = await axios.put(`http://localhost:4000/api/events/${eventId}`, {
+        userId: userEmail,
+      });
+      updateEventInList(res.data);
+    } catch (error) {
+      console.error("שגיאה בהרשמה:", error);
+    }
   };
 
   const handleNotParticipate = async (eventId) => {
     try {
       const res = await axios.put(
         `http://localhost:4000/api/events/${eventId}/remove-participant`,
-        { userId }
+        { userId: userEmail }
       );
-
-      const updatedEvent = res.data;
-      const newParticipatedEvents = participatedEvents.filter(
-        (id) => id !== eventId
-      );
-      localStorage.setItem(
-        "participatedEvents",
-        JSON.stringify(newParticipatedEvents)
-      );
-      setParticipatedEvents(newParticipatedEvents);
-
-      setEvents((prevEvents) =>
-        prevEvents.map((event) =>
-          event._id === updatedEvent._id ? updatedEvent : event
-        )
-      );
+      updateEventInList(res.data);
     } catch (error) {
-      console.error("שגיאה בביטול ההרשמה:", error);
+      console.error("שגיאה בביטול הרשמה:", error);
     }
   };
 
+  const updateEventInList = (updatedEvent) => {
+    setEvents((prevEvents) =>
+      prevEvents.map((event) =>
+        event._id === updatedEvent._id ? updatedEvent : event
+      )
+    );
+    setFilteredEvents((prevEvents) =>
+      prevEvents.map((event) =>
+        event._id === updatedEvent._id ? updatedEvent : event
+      )
+    );
+  };
+
+  const isUserParticipating = (event) => {
+    return event.participants.includes(userObjectId);
+  };
+
   const toggleDetails = (eventId) => {
-    setExpandedEvent(expandedEvent === eventId ? null : eventId);
+    setExpandedEvent((prev) => (prev === eventId ? null : eventId));
+  };
+
+  const applyFilters = () => {
+    let filtered = [...events];
+
+    if (filterCity.trim()) {
+      filtered = filtered.filter((event) =>
+        event.place.toLowerCase().includes(filterCity.toLowerCase())
+      );
+    }
+
+    if (filterGender.trim()) {
+      filtered = filtered.filter((event) =>
+        event.gender.toLowerCase() === filterGender.toLowerCase()
+      );
+    }
+
+    if (filterMinAge && filterMaxAge) {
+      filtered = filtered.filter((event) => {
+        const [minAge, maxAge] = event.age;
+        return (
+          parseInt(minAge) >= parseInt(filterMinAge) &&
+          parseInt(maxAge) <= parseInt(filterMaxAge)
+        );
+      });
+    }
+
+    setFilteredEvents(filtered);
+  };
+
+  const resetFilters = () => {
+    setFilterCity("");
+    setFilterGender("");
+    setFilterMinAge("");
+    setFilterMaxAge("");
+    setFilteredEvents(events);
   };
 
   return (
     <div className="events-container">
       <h1>אירועים</h1>
-      <p>מצפים לראות אותך שם!</p>
 
-      {/* אם אין אירועים כלל, הצגת הודעה למשתמש */}
-      {events.length === 0 ? (
+      <div className="filters">
+        <input
+          type="text"
+          placeholder="מיקום"
+          value={filterCity}
+          onChange={(e) => setFilterCity(e.target.value)}
+        />
+        <select value={filterGender} onChange={(e) => setFilterGender(e.target.value)}>
+          <option value="">בחר מגדר</option>
+          <option value="male">זכר</option>
+          <option value="female">נקבה</option>
+          <option value="other">אחר</option>
+        </select>
+        <input
+          type="number"
+          placeholder="גיל מינימלי"
+          value={filterMinAge}
+          onChange={(e) => setFilterMinAge(e.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="גיל מקסימלי"
+          value={filterMaxAge}
+          onChange={(e) => setFilterMaxAge(e.target.value)}
+        />
+        <Button variant="contained" onClick={applyFilters}>סנן</Button>
+        <Button variant="outlined" onClick={resetFilters}>איפוס</Button>
+      </div>
+
+      {filteredEvents.length === 0 ? (
         <p style={{ textAlign: "center", fontSize: "18px", color: "red" }}>
           ❌ אין כרגע אירועים להצגה.
         </p>
       ) : (
         <ul className="events-list">
-          {events.map((event) => (
+          {filteredEvents.map((event) => (
             <li key={event._id} className="event-item">
               <div className="event-header">
-                <div className="event-info">
-                  <h2>{event.eventName}</h2>
-                  <p>📍 {event.place}</p>
-                  <p>🕒 {event.hour} | 📅 {event.date}</p>
-                  <Button
-                    className="event-button"
-                    onClick={() => toggleDetails(event._id)}
-                  >
-                    {expandedEvent === event._id ? "סגור" : "פרטים נוספים"}
-                  </Button>
+                <h2>{event.eventName}</h2>
+                <p>
+  📍{" "}
+  <a
+    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.place)}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{ color: "inherit", textDecoration: "none", fontWeight: "bold" }}
+  >
+    {event.place}
+  </a>
+</p>
+
+                <p>🕒 {event.hour} | 📅 {event.date}</p>
+
+                <Button
+                  className="event-button"
+                  onClick={() => toggleDetails(event._id)}
+                >
+                  {expandedEvent === event._id ? "סגור" : "פרטים נוספים"}
+                </Button>
+
+                {expandedEvent === event._id && (
+                  <div className="event-details">
+                    <p><strong>🧑‍🤝‍🧑 גילאים:</strong> {event.age[0]} - {event.age[1]}</p>
+                    <p><strong>👥 מגדר:</strong> {event.gender}</p>
+                    <p><strong>📜 פרטים נוספים:</strong> {event.details}</p>
+                  </div>
+                )}
+
+                <div className="register-button">
+                  {isUserParticipating(event) ? (
+                    <Button
+                      className="event-button cancel"
+                      onClick={() => handleNotParticipate(event._id)}
+                    >
+                      בטל הרשמה
+                    </Button>
+                  ) : (
+                    <Button
+                      className="event-button"
+                      onClick={() => handleParticipate(event._id)}
+                    >
+                      אני רוצה להרשם
+                    </Button>
+                  )}
+                  <p>{event.participants.length} משתתפים</p>
                 </div>
               </div>
-
-              {expandedEvent === event._id && (
-                <div className="event-details">
-                  <p><strong>🧑‍🤝‍🧑 גילאים:</strong> {event.age[0]} - {event.age[1]}</p>
-                  <p><strong>👥 מגדר:</strong> {event.gender}</p>
-                  <p><strong>📜 פרטים נוספים:</strong> {event.details}</p>
-                </div>
-              )}
-
-              <Button
-                className="event-button"
-                onClick={() => handleParticipate(event)}
-              >
-                אני רוצה להרשם
-              </Button>
-              <p>{event.participants.length} משתתפים</p>
-
-              {participatedEvents.includes(event._id) && (
-                <Button
-                  className="event-button cancel"
-                  onClick={() => handleNotParticipate(event._id)}
-                >
-                  בטל הרשמה
-                </Button>
-              )}
             </li>
           ))}
         </ul>
       )}
-
-      {/* הצגת הפופאפ עם הנתונים של האירוע הנבחר */}
-      {popupOpen && <Popup event={selectedEvent} onClose={() => setPopupOpen(false)} />}
     </div>
   );
 };

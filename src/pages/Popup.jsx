@@ -1,44 +1,23 @@
 import React from "react";
-import "./popup.css"; // חיבור קובץ העיצוב
+import "./popup.css";
 
-const Popup = ({ event, onClose }) => {
-  if (!event) return null; // אם אין אירוע נבחר, לא להציג פופאפ
+const Popup = ({ event, onClose, onParticipate }) => {
+  if (!event) return null;
 
   return (
     <div className="popup-overlay">
       <div className="popup-content">
-        <h2>רכישת כרטיסים עבור {event.eventName}</h2>
-        <p>📍 מיקום: {event.place}</p>
-        <p>📅 תאריך: {event.date} | 🕒 שעה: {event.hour}</p>
-        <p>💰 מחיר כרטיס: ₪{event.price.toFixed(2)}</p>
+        <h2>פרטי האירוע</h2>
+        <p><strong>שם:</strong> {event.eventName}</p>
+        <p><strong>מקום:</strong> {event.place}</p>
+        <p><strong>תאריך:</strong> {event.date}</p>
+        <p><strong>שעה:</strong> {event.hour}</p>
+        <p><strong>פרטים נוספים:</strong> {event.details}</p>
 
-        <table className="ticket-table">
-          <thead>
-            <tr>
-              <th>סוג כרטיס</th>
-              <th>מחיר</th>
-              <th>כמות</th>
-              <th>סה"כ</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>כניסה רגילה</td>
-              <td>₪{event.price.toFixed(2)}</td>
-              <td>
-                <button>-</button>
-                <span>1</span>
-                <button>+</button>
-              </td>
-              <td>₪{event.price.toFixed(2)}</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <button className="close-btn" onClick={onClose}>
-          סגור
-        </button>
-        <button className="purchase-btn">רכישה</button>
+        <div className="popup-buttons">
+          <button onClick={onParticipate}>✅ השתתפות</button>
+          <button onClick={onClose}>❌ סגור</button>
+        </div>
       </div>
     </div>
   );

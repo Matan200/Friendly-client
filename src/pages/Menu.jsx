@@ -26,13 +26,16 @@ const MenuBar = () => {
         <button onClick={() => navigate("/events")} className="menu-item">
           Events
         </button>
-        <button onClick={() => navigate("/profile")} className="menu-item">
-          My Profile
+        <button onClick={() => navigate("/myposts")} className="menu-item">
+          השיתופים שלי
         </button>
-        <button onClick={() => alert("Filter options coming soon!")} className="menu-item">
-          Filter
+        <button onClick={() => navigate("/alumni")} className="menu-item">
+          הבוגרים שלנו
         </button>
-        <button onClick={() => alert("Redirecting to Donate page...")} className="menu-item">
+        <button onClick={() => navigate("/myprofile")} className="menu-item">
+          הפרופיל שלי
+        </button>
+        <button onClick={() => navigate("/donate")} className="menu-item">
           Donate
         </button>
         <button onClick={logoutFunc} className="logout-button">

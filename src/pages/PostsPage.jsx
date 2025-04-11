@@ -13,6 +13,14 @@ const PostsPage = () => {
 
   const [expandedPosts, setExpandedPosts] = useState({});
 
+  const [filterCity, setFilterCity] = useState("");
+  const [filterSchool, setFilterSchool] = useState("");
+  const [filterMinAge, setFilterMinAge] = useState("");
+  const [filterMaxAge, setFilterMaxAge] = useState("");
+  const [filterSubject, setFilterSubject] = useState("");
+  const [filterGender, setFilterGender] = useState("");
+  const [isFilterOpen, setIsFilterOpen] = useState(false); // לפופאפ
+
   // קבלת מזהה המשתמש המחובר מה-LocalStorage
   const userId = localStorage.getItem("editor");
 
@@ -140,6 +148,23 @@ const PostsPage = () => {
       console.error("Error adding comment:", error);
     }
   };
+  const fetchFilteredPosts = async () => {
+  try {
+    const response = await axios.get("http://localhost:4000/api/posts/filter", {
+      params: {
+        city: filterCity,
+        school: filterSchool,
+        minAge: filterMinAge,
+        maxAge: filterMaxAge,
+        subject: filterSubject,
+        gender: filterGender,
+      },
+    });
+    setPosts(response.data);
+  } catch (error) {
+    console.error("Error fetching filtered posts:", error);
+  }
+};
 
   // תפריט
   const toggleMenu = () => {
@@ -190,13 +215,118 @@ const PostsPage = () => {
             Post It!
           </Button>
         </div>
+
+
+
+        <Button onClick={() => setIsFilterOpen(true)}>🔍 סינון פוסטים</Button>
+
+{isFilterOpen && (
+  <div className="modal-background">
+    <div className="modal-content">
+      <h3>סינון פוסטים</h3>
+
+      <input
+        type="text"
+        placeholder="עיר"
+        value={filterCity}
+        onChange={(e) => setFilterCity(e.target.value)}
+      />
+
+      <input
+        type="text"
+        placeholder="בית ספר"
+        value={filterSchool}
+        onChange={(e) => setFilterSchool(e.target.value)}
+      />
+
+      <input
+        type="number"
+        placeholder="גיל מינימלי"
+        value={filterMinAge}
+        onChange={(e) => setFilterMinAge(e.target.value)}
+      />
+
+      <input
+        type="number"
+        placeholder="גיל מקסימלי"
+        value={filterMaxAge}
+        onChange={(e) => setFilterMaxAge(e.target.value)}
+      />
+
+      <input
+        type="text"
+        placeholder="נושא הפוסט"
+        value={filterSubject}
+        onChange={(e) => setFilterSubject(e.target.value)}
+      />
+
+      <select
+        value={filterGender}
+        onChange={(e) => setFilterGender(e.target.value)}
+      >
+        <option value="">בחר מגדר</option>
+        <option value="male">MALE</option>
+        <option value="female">FEMALE</option>
+        <option value="other">OTHER</option>
+      </select>
+
+      <div className="filter-buttons-container">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            fetchFilteredPosts();
+            setIsFilterOpen(false);
+          }}
+        >
+          סנן
+        </Button>
+
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={() => setIsFilterOpen(false)}
+        >
+          ביטול
+        </Button>
+
+        <Button
+          variant="outlined"
+          onClick={() => {
+            setFilterCity("");
+            setFilterSchool("");
+            setFilterMinAge("");
+            setFilterMaxAge("");
+            setFilterSubject("");
+            setFilterGender("");
+            fetchPosts(); // שליפה מחדש של כל הפוסטים
+            setIsFilterOpen(false); // סגירת הפופאפ
+          }}
+        >
+          איפוס סינון
+        </Button>
+      </div>
+    </div>
+  </div>
+)}
+
+
+
+
+
         <div className="posts-container">
           {posts?.map((post) => (
             <div key={post._id} className="post-item">
               <h3>{post.subject}</h3>
               <p>{post.postContent}</p>
               <p>Posted by: {post.editor?.userName || "Unknown User"}</p>
-
+              <p>
+  Posted on:{" "}
+  {new Date(post.createdAt).toLocaleString("he-IL", {
+    dateStyle: "short",
+    timeStyle: "short",
+  })}
+</p>
               <div className="comment-section">
                 <textarea
                   className="comment-field"
