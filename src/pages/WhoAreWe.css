@@ -1,0 +1,105 @@
+/* עיצוב עמוד מי אנחנו */
+.who-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+    padding: 80px 40px;
+    direction: rtl;
+    background-color: #f9f9f9;
+    flex-wrap: wrap;
+  }
+  
+  /* אנימציות */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  /* תמונה */
+  .who-image {
+    animation: fadeInLeft 1s ease forwards;
+  }
+  
+  .who-image img {
+    width: 400px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+  .who-image p{
+font-size: 25px;  }
+  /* טקסט */
+  .who-text {
+    max-width: 500px;
+    text-align: right;
+    opacity: 0;
+    animation: fadeInUp 1.2s ease forwards;
+    animation-delay: 0.2s;
+  }
+  
+  .who-text h2 {
+    font-size: 36px;
+    margin-bottom: 10px;
+    color: #222;
+  }
+  
+  .underline {
+    width: 60px;
+    height: 4px;
+    background-color: #395e59;
+    margin-bottom: 20px;
+  }
+  
+  .who-text p {
+    font-size: 18px;
+    line-height: 1.8;
+    color: #444;
+  }
+  
+  /* רספונסיביות */
+  @media (max-width: 768px) {
+    .who-container {
+      flex-direction: column;
+      padding: 40px 20px;
+    }
+  
+    .who-image img {
+      width: 100%;
+      max-width: 350px;
+    }
+  
+    .who-text {
+      text-align: center;
+    }
+  
+    .who-text h2 {
+      font-size: 28px;
+    }
+  
+    .who-text p {
+      font-size: 16px;
+    }
+  
+    .underline {
+      margin: 0 auto 20px;
+    }
+  }
+  

@@ -1,4 +1,4 @@
-/* עיצוב כללי */
+/* איפוס כללי */
 * {
   margin: 0;
   padding: 0;
@@ -7,82 +7,145 @@
 
 body {
   font-family: "Trebuchet MS", sans-serif;
-  background: linear-gradient(#000000, #303030);
-  color: #fff;
+  background: url("/public/images/kids.jpg") no-repeat center center fixed;
+  background-size: cover;
+  color: #ffffffec;
 }
 
-/* עיצוב הקונטיינר המרכזי */
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* עמוד ההתחברות */
+.login-page {
+  direction: rtl;
   min-height: 100vh;
-  padding: 25px;
-  background: #1f242d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 50px;
 }
 
-/* עיצוב הטופס */
-form {
-  width: 400px;
-  padding: 30px;
-  background: #a388a9;
-  border-radius: 10px;
-  filter: drop-shadow(0 0 10px #87d3ec);
+/* 🔥 אנימציות */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* כותרת עליונה */
+.login-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #261eb9;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  margin-top: 70px;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+.login-subtitle {
+  font-size: 20px;
+  color: #1448c1;
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 6px 16px;
+  border-radius: 8px;
+  margin-bottom: 0px;
+  animation: fadeInUp 1.2s ease-out forwards;
+}
+
+/* הטופס עצמו */
+.container {
+  background-color: #a388a900;
+  padding: 30px 40px;
+  border-radius: 12px;
+  width: 1000px;
+  animation: fadeIn 1.5s ease-out forwards;
+}
+
+/* כותרת בתוך הטופס */
+.container h2 {
+  font-size: 25px;
+  text-align: center;
+  margin-bottom: 10px;
+  color: #000;
+  text-shadow: 2px 2px 4px rgba(211, 59, 191, 0.3);
 }
 
 form h3 {
-  font-size: 24px;
+  font-size: 22px;
   text-align: center;
+  color: #171616;
   margin-bottom: 20px;
-  color: #fff;
 }
 
-/* עיצוב השדות */
+/* שדות טופס */
 .input-box {
   margin-bottom: 15px;
+  text-align: right;
 }
 
 .input-box span {
   display: block;
-  margin-bottom: 5px;
-  color: #ccc;
+  margin-bottom: 6px;
+  font-size: 15px;
+  color: #ffffff;
 }
 
 .input-box input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccc;
   border-radius: 6px;
+  border: none;
   font-size: 15px;
-  background-color: #f7f7f7;
+  background-color: #fff;
+  color: #000;
 }
 
-/* עיצוב הכפתור */
+/* כפתור התחברות */
 form .btn {
   width: 100%;
   padding: 12px;
-  background: #c7c1f3;
+  background: #5d4bff;
   border: none;
   border-radius: 6px;
   font-size: 17px;
   color: #fff;
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: background 0.3s ease;
+  margin-top: 10px;
 }
 
 form .btn:hover {
-  background: #492efc;
-  filter: drop-shadow(0 0 5px #fdfafa);
+  background: #372d8f;
 }
 
-/* עיצוב טקסט וקישורים */
+/* קישורים וטקסט מתחת לטופס */
 form p {
   text-align: center;
   margin: 15px 0;
+  color: #000000;
 }
 
 form a {
-  color: #87d3ec;
+  color: #f0adff;
   text-decoration: none;
   font-weight: bold;
 }
@@ -93,9 +156,17 @@ form a:hover {
 
 /* רספונסיביות */
 @media (max-width: 500px) {
-  form {
-    width: 100%;
+  .container {
+    width: 90%;
     padding: 20px;
+  }
+
+  .login-title {
+    font-size: 26px;
+  }
+
+  .login-subtitle {
+    font-size: 16px;
   }
 
   form h3 {

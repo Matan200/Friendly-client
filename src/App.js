@@ -13,6 +13,7 @@ import MyProfilePage from "./pages/MyProfilePage";
 import AccessibilityButton from "./pages/AccessibilityButton";
 import TestimonialsPage from "./pages/TestimonialsPage";
 import MyPosts from "./pages/MyPosts";
+import Whoarewe from "./pages/WhoAreWe";
 function App() {
   return (
     <Router>
@@ -22,6 +23,7 @@ function App() {
         <Route path="/" element={<LogInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/whoarewe" element={<Whoarewe />} />
         <Route path="/posts" element={<PostsPage />} />
         <Route path="/events" element={<EventsForm />} />
         <Route path="/alumni" element={<TestimonialsPage/>}/>

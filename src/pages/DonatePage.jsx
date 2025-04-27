@@ -1,92 +1,59 @@
-import { Button } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
-import "./login.css";
-import { useState } from "react";
-import axios from "axios";
-import AccessibilityButton from "./AccessibilityButton";
+import React, { useState } from "react";
+import "./donate.css";
 
-const DonatePage = () => {
-  const [formLogin, setFormLogin] = useState({
-    email: "",
-    password: "",
-  });
-  const [error, setError] = useState("");
+const Donate = () => {
+  const [amount, setAmount] = useState("");
+  const [message, setMessage] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("credit");
 
-  const navigate = useNavigate();
-
-  const handleLogin = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:4000/api/users/login",
-        formLogin
-      );
-      //במידה וכל הנתונים תקינים
-      if (response.data.success) {
-        alert("Login successful");
-        localStorage.setItem("editor", formLogin.email);
-        navigate("/posts");
-      } else {
-        setError("Email or password is not correct");
-      }
-    } catch (error) {
-      console.error("Error during login client:", error);
-      setError("An error occurred. Please try again later.");
-    }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormLogin((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    alert(`תודה על התרומה של ₪${amount} באמצעות ${paymentMethod}!`);
+    setAmount("");
+    setMessage("");
+    setPaymentMethod("credit");
   };
 
   return (
-    <div>
-      <AccessibilityButton />
-      <div className="container">
-        <form onSubmit={handleLogin}>
-          <h3 className="allign">Log In</h3>
-          {error && (
-            <p style={{ color: "red", textAlign: "center" }}>{error}</p>
-          )}
-          <div className="input-box">
-            <span>Email</span>
-            <input
-              type="text"
-              name="email"
-              placeholder="Enter your email"
-              value={formLogin.email}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="input-box">
-            <span>Password</span>
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter your password"
-              value={formLogin.password}
-              onChange={handleChange}
-            />
-          </div>
-          <button type="submit" className="btn">
-            Log In
-          </button>
-          <p className="allign">Don't have an account?</p>
-          <div className="allign">
-            <Link to="/signup">
-              <Button variant="contained" color="primary">
-                Sign Up
-              </Button>
-            </Link>
-          </div>
+    <div className="donate-wrapper">
+      <div className="donate-box">
+        <h2>תמכו בפעילות שלנו 💖</h2>
+        <p className="donate-subtext">
+          כל תרומה עוזרת לנו להמשיך ולעשות טוב 💫
+        </p>
+
+        <form onSubmit={handleSubmit}>
+          <label>סכום התרומה (₪)</label>
+          <input
+            type="number"
+            placeholder="לדוג' 50"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            required
+          />
+
+          <label>בחר אמצעי תשלום</label>
+          <select
+            value={paymentMethod}
+            onChange={(e) => setPaymentMethod(e.target.value)}
+          >
+            <option value="credit">כרטיס אשראי 💳</option>
+            <option value="paypal">PayPal 🅿️</option>
+            <option value="bit">Bit 📱</option>
+          </select>
+
+          <label>הודעה אישית (אופציונלי)</label>
+          <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="רוצים לומר משהו? אנחנו קוראים הכל!"
+          />
+
+          <button type="submit">בצע תרומה ✅</button>
         </form>
       </div>
     </div>
   );
 };
 
-export default DonatePage;
+export default Donate;

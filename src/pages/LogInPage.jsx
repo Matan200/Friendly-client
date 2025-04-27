@@ -21,7 +21,6 @@ const LogInPage = () => {
         "http://localhost:4000/api/users/login",
         formLogin
       );
-      //במידה וכל הנתונים תקינים
       if (response.data.success) {
         alert("Login successful");
         localStorage.setItem("editor", formLogin.email);
@@ -46,44 +45,51 @@ const LogInPage = () => {
   return (
     <div>
       <AccessibilityButton />
-      <div className="container">
-        <form onSubmit={handleLogin}>
-          <h3 className="allign">Log In</h3>
-          {error && (
-            <p style={{ color: "red", textAlign: "center" }}>{error}</p>
-          )}
-          <div className="input-box">
-            <span>Email</span>
-            <input
-              type="text"
-              name="email"
-              placeholder="Enter your email"
-              value={formLogin.email}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="input-box">
-            <span>Password</span>
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter your password"
-              value={formLogin.password}
-              onChange={handleChange}
-            />
-          </div>
-          <button type="submit" className="btn">
-            Log In
-          </button>
-          <p className="allign">Don't have an account?</p>
-          <div className="allign">
-            <Link to="/signup">
-              <Button variant="contained" color="primary">
-                Sign Up
-              </Button>
-            </Link>
-          </div>
-        </form>
+      <div className="login-page">
+        {/* <h1 className="login-title">איזה כיף לראות אותך כאן!</h1>
+        <div className="login-subtitle">השינוי מתחיל כאן</div> */}
+
+        <div className="container">
+          <form onSubmit={handleLogin}>
+            <h2>איזה כיף לראות אותך כאן!</h2>
+            <h2>השינוי מתחיל כאן</h2>
+            <h3 className="allign">התחברות</h3>
+            {error && (
+              <p style={{ color: "red", textAlign: "center" }}>{error}</p>
+            )}
+            <div className="input-box">
+              <span>מייל</span>
+              <input
+                type="text"
+                name="email"
+                placeholder="הכנס את המייל"
+                value={formLogin.email}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="input-box">
+              <span>סיסמא</span>
+              <input
+                type="password"
+                name="password"
+                placeholder="הכנס את הסיסמא"
+                value={formLogin.password}
+                onChange={handleChange}
+              />
+            </div>
+            <button type="submit" className="btn">
+              ✅התחבר
+            </button>
+            <p className="allign">? עדיין לא רשום</p>
+            <div className="allign">
+              <Link to="/signup">
+                <Button variant="contained" color="primary">
+                  👤 להרשמה
+                </Button>
+              </Link>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

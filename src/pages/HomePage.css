@@ -1,0 +1,20 @@
+.home-page {
+    padding-top: 100px; /* מרווח מראש הדף כדי לא להיות מוסתר ע"י התפריט */
+    text-align: center;
+    direction: rtl; /* כדי שהטקסט יהיה מיושר מימין לשמאל */
+    background-color: #f5f5f5;
+    min-height: 100vh;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .home-page h1 {
+    font-size: 32px;
+    color: #1e293b;
+    margin-bottom: 20px;
+  }
+  
+  .home-subtitle {
+    font-size: 20px;
+    color: #475569;
+  }
+  

@@ -20,6 +20,12 @@ const MenuBar = () => {
     <header className="header-container">
       <div className="menu-title">FRIENDLY</div>
       <nav className="menu-nav">
+      <button onClick={() => navigate("/home")} className="menu-item">
+          בית
+        </button>
+        <button onClick={() => navigate("/whoarewe")} className="menu-item">
+          מי אנחנו?
+        </button>
         <button onClick={() => navigate("/posts")} className="menu-item">
           Posts
         </button>

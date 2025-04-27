@@ -1,0 +1,72 @@
+.donate-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #f8fbff, #eef2f7);
+    min-height: 100vh;
+  }
+  
+  .donate-box {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 30px 35px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 460px;
+    direction: rtl;
+    text-align: right;
+  }
+  
+  .donate-box h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: #2c3e50;
+  }
+  
+  .donate-subtext {
+    margin-bottom: 20px;
+    color: #6c7a89;
+    font-size: 14px;
+  }
+  
+  .donate-box label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #34495e;
+  }
+  
+  .donate-box input,
+  .donate-box select,
+  .donate-box textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccd6dd;
+    border-radius: 6px;
+    font-size: 15px;
+    box-sizing: border-box;
+  }
+  
+  .donate-box textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  
+  .donate-box button {
+    margin-top: 20px;
+    width: 100%;
+    background-color: #2ecc71;
+    color: white;
+    font-size: 16px;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+  }
+  
+  .donate-box button:hover {
+    background-color: #27ae60;
+  }
+  
