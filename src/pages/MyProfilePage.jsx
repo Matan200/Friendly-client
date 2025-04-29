@@ -50,12 +50,17 @@ const MyProfilePage = () => {
 
     <div className="profile-container">
       <h2>הפרופיל שלי</h2>
+      {user.picture && (
+      <div className="profile-image">
+        <img src={user.picture} alt="Profile Avatar" />
+      </div>
+    )}
       <p><strong>שם:</strong> {user.userName}</p>
       <p><strong>אימייל:</strong> {user.email}</p>
       <p><strong>תעודת זהות:</strong> {user.idnumber}</p>
       <p><strong>מגדר:</strong> {user.gender}</p>
       <p><strong>כתובת:</strong> {user.address}</p>
-      <p><strong>בית ספר:</strong> {user.school || "לא הוזן"}</p>
+      <p><strong>בית ספר:</strong> {user.school || "לא תלמיד"}</p>
       <p><strong>תאריך לידה:</strong> {new Date(user.birthdate).toLocaleDateString("he-IL")}</p>
       <p><strong>גיל:</strong> {calculateAge(user.birthdate)}</p>
     </div>

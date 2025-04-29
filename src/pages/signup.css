@@ -150,3 +150,47 @@ input {
 .MuiIconButton-root {
   margin-left: 8px; /* מרווח בין שדה ההזנה לבין האייקון */
 }
+.avatar-section {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.avatar-options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.avatar-img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: transform 0.3s, border-color 0.3s;
+}
+
+.avatar-img:hover {
+  transform: scale(1.1);
+}
+
+.avatar-img.selected {
+  border-color: #5d4bff;
+  box-shadow: 0 0 8px #5d4bff88;
+}
+
+.preview-img {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.preview-img img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  margin-top: 5px;
+}

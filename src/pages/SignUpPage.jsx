@@ -27,10 +27,18 @@ const SignUpPage = () => {
     userName: "",
     password: "",
   }); // שדות לחלונית ה-Popup
+  const avatarOptions = [
+    "/images/avatar1.jpg",
+    "/images/avatar2.jpg",
+    "/images/avatar3.jpg",
+    "/images/avatar4.jpg",
+  ];
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [errors, setErrors] = useState({});
   const [isUnderage, setIsUnderage] = useState(false);
   const [showPopup, setShowPopup] = useState(false); // מצב להצגת ה-Popup
+  const [selectedAvatar, setSelectedAvatar] = useState(null);
+const [uploadedImage, setUploadedImage] = useState(null);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -108,6 +116,8 @@ const SignUpPage = () => {
       const res = await axios.post("http://localhost:4000/api/users/signup", {
         ...formData,
         ...popupData,
+        picture: uploadedImage || selectedAvatar,
+
       });
       if (res.data.existMail) {
         setErrors({ email: res.data.message });
@@ -133,10 +143,56 @@ const SignUpPage = () => {
 
     //setShowPopup(false);
   };
-
+  const handleAvatarSelect = (avatar) => {
+    setSelectedAvatar(avatar);
+    setUploadedImage(null); // reset if previously uploaded
+  };
+  
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUploadedImage(reader.result);
+        setSelectedAvatar(null); // reset if previously selected avatar
+      };
+      reader.readAsDataURL(file);
+    }
+  };
   return (
     <div className="container">
       <form onSubmit={handleSubmit}>
+      <div className="avatar-section">
+  <p>בחר תמונה אישית או אווטאר:</p>
+
+  <input type="file" accept="image/*" onChange={handleImageUpload} />
+
+  <div className="avatar-options">
+    {avatarOptions.map((avatar, index) => (
+      <img
+        key={index}
+        src={avatar}
+        alt={`avatar-${index}`}
+        className={`avatar-img ${selectedAvatar === avatar ? "selected" : ""}`}
+        onClick={() => handleAvatarSelect(avatar)}
+      />
+    ))}
+  </div>
+
+  {/* Show preview */}
+  {uploadedImage && (
+    <div className="preview-img">
+      <p>תמונה שהועלתה:</p>
+      <img src={uploadedImage} alt="uploaded" />
+    </div>
+  )}
+  {selectedAvatar && (
+    <div className="preview-img">
+      <p>אווטאר שנבחר:</p>
+      <img src={selectedAvatar} alt="selected-avatar" />
+    </div>
+  )}
+</div>
         <h1>Sign Up</h1>
         <div className="input-box">
           <span>Email</span>
