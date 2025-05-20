@@ -41,7 +41,7 @@ const MenuBar = () => {
         <button onClick={() => navigate("/myprofile")} className="menu-item">
           הפרופיל שלי
         </button>
-        <button  className="menu-item">
+        <button onClick={() => navigate("/donate")} className="menu-item">
           Donate
         </button>
         <button onClick={logoutFunc} className="logout-button">
