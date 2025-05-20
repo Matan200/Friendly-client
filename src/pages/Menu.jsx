@@ -20,17 +20,17 @@ const MenuBar = () => {
     <header className="header-container">
       <div className="menu-title">FRIENDLY</div>
       <nav className="menu-nav">
-      <button onClick={() => navigate("/home")} className="menu-item">
+      {/* <button onClick={() => navigate("/home")} className="menu-item">
           בית
-        </button>
+        </button> */}
         <button onClick={() => navigate("/whoarewe")} className="menu-item">
           מי אנחנו?
         </button>
         <button onClick={() => navigate("/posts")} className="menu-item">
-          Posts
+          פוסטים
         </button>
         <button onClick={() => navigate("/events")} className="menu-item">
-          Events
+          אירועים
         </button>
         <button onClick={() => navigate("/myposts")} className="menu-item">
           השיתופים שלי
@@ -41,7 +41,7 @@ const MenuBar = () => {
         <button onClick={() => navigate("/myprofile")} className="menu-item">
           הפרופיל שלי
         </button>
-        <button onClick={() => navigate("/donate")} className="menu-item">
+        <button  className="menu-item">
           Donate
         </button>
         <button onClick={logoutFunc} className="logout-button">

@@ -22,7 +22,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LogInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/home" element={<HomePage />} />
+        {/*<Route path="/home" element={<HomePage />} />*/}
         <Route path="/whoarewe" element={<Whoarewe />} />
         <Route path="/posts" element={<PostsPage />} />
         <Route path="/events" element={<EventsForm />} />
