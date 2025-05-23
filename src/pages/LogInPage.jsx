@@ -4,6 +4,7 @@ import "./login.css";
 import { useState } from "react";
 import axios from "axios";
 import AccessibilityButton from "./AccessibilityButton";
+const API_BASE = process.env.REACT_APP_API || "http://localhost:4000";
 
 const LogInPage = () => {
   const [formLogin, setFormLogin] = useState({
@@ -18,7 +19,7 @@ const LogInPage = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/users/login",
+        `${API_BASE}/api/users/login`,
         formLogin
       );
       if (response.data.success) {

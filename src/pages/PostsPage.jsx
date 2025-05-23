@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Button } from "@mui/material";
 import "./posts.css";
+const API_BASE = process.env.REACT_APP_API || "http://localhost:4000";
 
 const PostsPage = () => {
   const [newPost, setNewPost] = useState("");
@@ -28,7 +29,7 @@ const PostsPage = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/posts");
+        const response = await axios.get(`${API_BASE}/api/posts`);
         const sortedPosts = response.data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
@@ -53,7 +54,7 @@ const PostsPage = () => {
   // פונקציה לשליפת פוסטים מעודכנים
   const fetchPosts = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/api/posts");
+      const response = await axios.get(`${API_BASE}/api/posts`);
       const sortedPosts = response.data.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
@@ -70,7 +71,7 @@ const PostsPage = () => {
       return;
     }
     try {
-      const response = await axios.post("http://localhost:4000/api/posts", {
+      const response = await axios.post(`${API_BASE}/api/posts`, {
         editor: userId,
         subject: newSubject,
         postContent: newPost,
@@ -93,7 +94,7 @@ const PostsPage = () => {
   const handleClickLike = async (postId) => {
     try {
       const response = await axios.put(
-        `http://localhost:4000/api/posts/${postId}/like`
+        `${API_BASE}/api/posts/${postId}/like`
       );
       const updatedPost = response.data;
       setPosts((prevPosts) =>
@@ -112,7 +113,7 @@ const PostsPage = () => {
     }
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/users/findByEmail/${email}`
+        `${API_BASE}/api/users/findByEmail/${email}`
       );
       alert(response);
       const userid = response.data._id; // ה-`_id` של המשתמש
@@ -132,7 +133,7 @@ const PostsPage = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:4000/api/posts/${postId}/comments`,
+        `${API_BASE}/api/posts/${postId}/comments`,
         { text: comment, email: userId }
       );
       alert(response.data);
@@ -150,7 +151,7 @@ const PostsPage = () => {
   };
   const fetchFilteredPosts = async () => {
   try {
-    const response = await axios.get("http://localhost:4000/api/posts/filter", {
+    const response = await axios.get(`${API_BASE}/api/posts/filter`, {
       params: {
         city: filterCity,
         school: filterSchool,
