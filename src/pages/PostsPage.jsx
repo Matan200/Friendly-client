@@ -319,7 +319,7 @@ const PostsPage = () => {
           {posts?.map((post) => (
             <div key={post._id} className="post-item">
               {/* <h3>{post.subject}</h3> */}
-              <p>{post.postContent}</p>
+              <h3>{post.postContent}</h3>
               <p>Posted by: {post.editor?.userName || "Unknown User"}</p>
               <p>
   Posted on:{" "}
