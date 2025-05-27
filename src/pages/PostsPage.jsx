@@ -7,7 +7,7 @@ const API_BASE = process.env.REACT_APP_API || "http://localhost:4000";
 const PostsPage = () => {
   const [newPost, setNewPost] = useState("");
   const [posts, setPosts] = useState([]);
-  const [newSubject, setNewSubject] = useState("");
+  //const [newSubject, setNewSubject] = useState("");
   const [likes, setLikes] = useState({});
   const [newComment, setNewComment] = useState({});
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,7 +18,7 @@ const PostsPage = () => {
   const [filterSchool, setFilterSchool] = useState("");
   const [filterMinAge, setFilterMinAge] = useState("");
   const [filterMaxAge, setFilterMaxAge] = useState("");
-  const [filterSubject, setFilterSubject] = useState("");
+ // const [filterSubject, setFilterSubject] = useState("");
   const [filterGender, setFilterGender] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false); // לפופאפ
 
@@ -47,9 +47,9 @@ const PostsPage = () => {
   };
 
   // עדכון נושא הפוסט
-  const handleSubjectChange = (e) => {
-    setNewSubject(e.target.value);
-  };
+  // const handleSubjectChange = (e) => {
+  //   setNewSubject(e.target.value);
+  // };
 
   // פונקציה לשליפת פוסטים מעודכנים
   const fetchPosts = async () => {
@@ -73,7 +73,7 @@ const PostsPage = () => {
     try {
       const response = await axios.post(`${API_BASE}/api/posts`, {
         editor: userId,
-        subject: newSubject,
+        //subject: newSubject,
         postContent: newPost,
       });
 
@@ -84,7 +84,7 @@ const PostsPage = () => {
 
       // ריקון השדות של הפוסט החדש
       setNewPost("");
-      setNewSubject("");
+      //setNewSubject("");
     } catch (error) {
       console.error("Error creating post:", error);
     }
@@ -157,7 +157,7 @@ const PostsPage = () => {
         school: filterSchool,
         minAge: filterMinAge,
         maxAge: filterMaxAge,
-        subject: filterSubject,
+       // subject: filterSubject,
         gender: filterGender,
       },
     });
@@ -199,13 +199,13 @@ const PostsPage = () => {
       {/* אזור הפוסטים */}
       <div className="wall-container">
         <div className="upper-post-container">
-          <input
+          {/* <input
             className="subject-field"
             type="text"
             value={newSubject}
             onChange={handleSubjectChange}
             placeholder="Enter subject"
-          />
+          /> */}
           <textarea
             className="text-erea"
             value={newPost}
@@ -254,12 +254,12 @@ const PostsPage = () => {
         onChange={(e) => setFilterMaxAge(e.target.value)}
       />
 
-      <input
+      {/* <input
         type="text"
         placeholder="נושא הפוסט"
         value={filterSubject}
         onChange={(e) => setFilterSubject(e.target.value)}
-      />
+      /> */}
 
       <select
         value={filterGender}
@@ -298,7 +298,7 @@ const PostsPage = () => {
             setFilterSchool("");
             setFilterMinAge("");
             setFilterMaxAge("");
-            setFilterSubject("");
+           // setFilterSubject("");
             setFilterGender("");
             fetchPosts(); // שליפה מחדש של כל הפוסטים
             setIsFilterOpen(false); // סגירת הפופאפ
@@ -318,7 +318,7 @@ const PostsPage = () => {
         <div className="posts-container">
           {posts?.map((post) => (
             <div key={post._id} className="post-item">
-              <h3>{post.subject}</h3>
+              {/* <h3>{post.subject}</h3> */}
               <p>{post.postContent}</p>
               <p>Posted by: {post.editor?.userName || "Unknown User"}</p>
               <p>
