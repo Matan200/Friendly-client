@@ -2,6 +2,7 @@ import "./events.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Button } from "@mui/material";
+const API_BASE = process.env.REACT_APP_API || "http://localhost:4000";
 
 const EventsPage = () => {
   const [events, setEvents] = useState([]);
@@ -19,10 +20,10 @@ const EventsPage = () => {
   useEffect(() => {
     const fetchUserAndEvents = async () => {
       try {
-        const userRes = await axios.get(`http://localhost:4000/api/users/findByEmail/${userEmail}`);
+        const userRes = await axios.get(`${API_BASE}/api/users/findByEmail/${userEmail}`);
         setUserObjectId(userRes.data._id);
 
-        const eventsRes = await axios.get("http://localhost:4000/api/events");
+        const eventsRes = await axios.get(`${API_BASE}/api/events`);
         setEvents(eventsRes.data);
         setFilteredEvents(eventsRes.data);
       } catch (error) {
@@ -35,7 +36,7 @@ const EventsPage = () => {
 
   const handleParticipate = async (eventId) => {
     try {
-      const res = await axios.put(`http://localhost:4000/api/events/${eventId}`, {
+      const res = await axios.put(`${API_BASE}/api/events/${eventId}`, {
         userId: userEmail,
       });
       updateEventInList(res.data);
@@ -47,7 +48,7 @@ const EventsPage = () => {
   const handleNotParticipate = async (eventId) => {
     try {
       const res = await axios.put(
-        `http://localhost:4000/api/events/${eventId}/remove-participant`,
+        `${API_BASE}/api/events/${eventId}/remove-participant`,
         { userId: userEmail }
       );
       updateEventInList(res.data);

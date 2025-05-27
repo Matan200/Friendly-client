@@ -13,6 +13,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline"; // Import help icon
 import "./signup.css";
+const API_BASE = process.env.REACT_APP_API || "http://localhost:4000";
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
@@ -113,7 +114,7 @@ const [uploadedImage, setUploadedImage] = useState(null);
     // }
 
     try {
-      const res = await axios.post("http://localhost:4000/api/users/signup", {
+      const res = await axios.post(`${API_BASE}/api/users/signup`, {
         ...formData,
         ...popupData,
         picture: uploadedImage || selectedAvatar,

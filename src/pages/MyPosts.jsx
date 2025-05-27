@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./MyPosts.css"; // עיצוב בסיסי
+const API_BASE = process.env.REACT_APP_API || "http://localhost:4000";
 
 const MyPosts = () => {
   const [userPosts, setUserPosts] = useState([]);
@@ -15,7 +16,7 @@ const MyPosts = () => {
 
         // שליפת המשתמש לפי המייל
         const userRes = await axios.get(
-          `http://localhost:4000/api/users/findByEmail/${userEmail}`
+          `${API_BASE}/api/users/findByEmail/${userEmail}`
         );
         const user = userRes.data;
 
@@ -25,7 +26,7 @@ const MyPosts = () => {
         const postIds = user.posts || [];
 
         // שליפת כל הפוסטים
-        const postsRes = await axios.get("http://localhost:4000/api/posts");
+        const postsRes = await axios.get(`${API_BASE}/api/posts`);
         const allPosts = postsRes.data;
 
         console.log("📝 כל הפוסטים שהתקבלו:", allPosts);

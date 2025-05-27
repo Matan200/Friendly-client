@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@mui/material";
 import "./MyProfile.css";
+const API_BASE = process.env.REACT_APP_API || "http://localhost:4000";
 
 const MyProfilePage = () => {
   const [user, setUser] = useState(null);
@@ -17,7 +18,7 @@ const MyProfilePage = () => {
       try {
       //alert(userId);
         const response = await axios.get(
-          `http://localhost:4000/api/users/findByEmail/${userId}`
+          `${API_BASE}/api/users/findByEmail/${userId}`
         );
        // alert(response.data.address);
         setUser(response.data);
