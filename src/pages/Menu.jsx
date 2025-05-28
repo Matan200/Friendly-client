@@ -1,52 +1,39 @@
-import React from "react";
-import "./menu.css"; // קובץ עיצוב לתפריט
+import React, { useState } from "react";
+import "./menu.css";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const MenuBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false); // מצב התפריט
 
-  // רשימת דפים שבהם התפריט הראשי לא יוצג
   const hiddenMenuRoutes = ["/", "/signup"];
+  if (hiddenMenuRoutes.includes(location.pathname)) return null;
 
-  if (hiddenMenuRoutes.includes(location.pathname)) {
-    return null; // לא מציג את התפריט
-  }
   const logoutFunc = () => {
-    localStorage.removeItem("editor"); 
-    navigate("/"); 
+    localStorage.removeItem("editor");
+    navigate("/");
   };
+
   return (
     <header className="header-container">
       <div className="menu-title">FRIENDLY</div>
-      <nav className="menu-nav">
-      {/* <button onClick={() => navigate("/home")} className="menu-item">
-          בית
-        </button> */}
-        <button onClick={() => navigate("/whoarewe")} className="menu-item">
-          מי אנחנו?
-        </button>
-        <button onClick={() => navigate("/posts")} className="menu-item">
-          פוסטים
-        </button>
-        <button onClick={() => navigate("/events")} className="menu-item">
-          אירועים
-        </button>
-        <button onClick={() => navigate("/myposts")} className="menu-item">
-          השיתופים שלי
-        </button>
-        <button onClick={() => navigate("/alumni")} className="menu-item">
-          הבוגרים שלנו
-        </button>
-        <button onClick={() => navigate("/myprofile")} className="menu-item">
-          הפרופיל שלי
-        </button>
-        <button onClick={() => navigate("/donate")} className="menu-item">
-          Donate
-        </button>
-        <button onClick={logoutFunc} className="logout-button">
-          Logout
-        </button>
+
+      <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+
+      <nav className={`menu-nav ${menuOpen ? "open" : ""}`}>
+        <button onClick={() => navigate("/whoarewe")} className="menu-item">מי אנחנו?</button>
+        <button onClick={() => navigate("/posts")} className="menu-item">פוסטים</button>
+        <button onClick={() => navigate("/events")} className="menu-item">אירועים</button>
+        <button onClick={() => navigate("/myposts")} className="menu-item">השיתופים שלי</button>
+        <button onClick={() => navigate("/alumni")} className="menu-item">הבוגרים שלנו</button>
+        <button onClick={() => navigate("/myprofile")} className="menu-item">הפרופיל שלי</button>
+        <button onClick={() => navigate("/donate")} className="menu-item">Donate</button>
+        <button onClick={logoutFunc} className="logout-button">Logout</button>
       </nav>
     </header>
   );
