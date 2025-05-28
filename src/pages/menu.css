@@ -2,7 +2,7 @@
   background-color: #1e293b;
   padding: 15px 20px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   position: fixed;
@@ -12,11 +12,13 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   direction: rtl;
   gap: 10px;
+  flex-wrap: wrap;
 }
+
 .wall-container {
-  margin-top: 80px; /* או לפי הגובה של התפריט */
+  margin-top: 80px;
 }
-/* המילה FRIENDLY בצד ימין */
+
 .menu-title {
   font-size: 24px;
   font-weight: bold;
@@ -25,15 +27,13 @@
   white-space: nowrap;
 }
 
-/* תפריט עם ריווח שמאלה מהמילה FRIENDLY */
 .menu-nav {
   display: flex;
   flex-direction: row;
   gap: 30px;
-  margin-right: 180px; /* זה יוצר ריווח בינם לבין FRIENDLY */
+  margin-right: 180px;
 }
 
-/* עיצוב כפתורים */
 .menu-item {
   background: none;
   border: none;
@@ -48,4 +48,33 @@
 .menu-item:hover {
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 6px;
+}
+
+/* רספונסיביות למסכים צרים */
+@media (max-width: 600px) {
+  .header-container {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 15px;
+  }
+
+  .menu-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .menu-nav {
+    flex-direction: column;
+    gap: 10px;
+    margin-right: 0;
+    width: 100%;
+  }
+
+  .menu-item {
+    width: 100%;
+    text-align: right;
+    padding: 10px 0;
+    font-size: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
 }
