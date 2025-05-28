@@ -1,4 +1,8 @@
-/* עיצוב כללי */
+/* בסיס ועיצוב כללי */
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: "Trebuchet MS", sans-serif;
   background: linear-gradient(#f0f0f0, #e6e6e6);
@@ -6,11 +10,9 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-
 }
 
-
-/* הקונטיינר הראשי */
+/* מבנה עמוד */
 .wall-container {
   display: flex;
   flex-direction: column;
@@ -19,7 +21,15 @@ body {
   background-color: #f0f2f5;
 }
 
-/* הקונטיינר העליון להוספת פוסט */
+.posts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 600px;
+}
+
+/* קופסת יצירת פוסט */
 .upper-post-container {
   background: #fff;
   border-radius: 10px;
@@ -31,9 +41,9 @@ body {
   border: 1px solid #ddd;
 }
 
-/* שדה הכנסת טקסט */
 .subject-field,
-.text-erea {
+.text-erea,
+.comment-field {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
@@ -44,7 +54,6 @@ body {
   color: #333;
 }
 
-/* כפתור פרסום */
 .post-button {
   width: 100%;
   padding: 12px;
@@ -61,18 +70,7 @@ body {
   background: #155ec3;
 }
 
-/* קונטיינר הפוסטים */
-.posts-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-  max-width: 600px;
-  /* font-size: larger; */
-  /* font-style: oblique; */
-}
-
-/* עיצוב של כל פוסט */
+/* פוסט בודד */
 .post-item {
   background: #fff;
   border-radius: 10px;
@@ -100,8 +98,7 @@ body {
   color: #333;
 }
 
-/* עיצוב כפתור לייק */
-/* עיצוב כפתור לייק */
+/* לייקים */
 .likeBtn {
   display: flex;
   align-items: center;
@@ -136,17 +133,6 @@ body {
   margin-top: 15px;
 }
 
-.comment-field {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-  background-color: #f7f7f7;
-  color: #333;
-  margin-bottom: 10px;
-}
-
 .comments p {
   font-size: 14px;
   color: #606770;
@@ -155,6 +141,28 @@ body {
   background: #f0f2f5;
   border-radius: 6px;
 }
+
+.comment-item {
+  padding: 8px;
+  background: #fff;
+  border-radius: 5px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+}
+
+/* קופסת תגובות עם גלילה */
+.comments-container {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px;
+  background: #f0f2f5;
+  margin-top: 10px;
+}
+
+/* תפריט */
 header {
   background-color: #1e293b;
   padding: 10px;
@@ -196,50 +204,8 @@ header {
 .menu-item:hover {
   background-color: #4b5563;
 }
-/* עיצוב קופסת התגובות עם גלילה פנימית */
-.comments-container {
-  max-height: 200px; /* גובה קבוע לאזור התגובות */
-  overflow-y: auto; /* יצירת גלילה פנימית */
-  border: 1px solid #ddd; /* מסגרת עדינה */
-  border-radius: 6px;
-  padding: 10px;
-  background: #f0f2f5;
-  margin-top: 10px;
-}
-/* קונטיינר לתגובות */
 
-/* כאשר לוחצים על הצג עוד */
-.comments-container.expanded {
-  max-height: 200px; /* גובה מוגדל */
-  overflow-y: auto; /* גלילה פנימית */
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 10px;
-  background: #f0f2f5;
-}
-
-/* כל תגובה בתוך הרשימה */
-.comment-item {
-  padding: 8px;
-  background: #fff;
-  border-radius: 5px;
-  margin-bottom: 8px;
-  font-size: 14px;
-  border: 1px solid #ddd;
-}
-
-/* רספונסיביות */
-@media (max-width: 500px) {
-  .upper-post-container,
-  .post-item {
-    padding: 15px;
-  }
-
-  .subject-field,
-  .text-erea {
-    font-size: 14px;
-  }
-}
+/* מודאלים */
 .modal-background {
   position: fixed;
   top: 0;
@@ -263,40 +229,55 @@ header {
   flex-direction: column;
   gap: 10px;
 }
-@media (max-width: 500px) {
+
+/* רספונסיביות – מותאם לאייפון */
+@media (max-width: 430px) {
   .wall-container,
   .posts-container,
   .upper-post-container,
   .post-item {
-    width: 100% !important;
-    padding: 10px !important;
-    box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
   }
 
   .subject-field,
   .text-erea,
-  .comment-field {
-    width: 100% !important;
+  .comment-field,
+  input,
+  textarea,
+  select {
+    width: 100%;
     font-size: 14px;
   }
 
-  .modal-content {
-    width: 95% !important;
-  }
-
+  .post-button,
   .filter-buttons-container button {
-    width: 100% !important;
-    margin-bottom: 8px;
+    width: 100%;
+    margin-top: 8px;
+    font-size: 16px;
   }
 
-  .likeBtn {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
+  .modal-content {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .comment-item {
+    font-size: 13px;
+    padding: 6px;
   }
 
   .menu-item {
     font-size: 14px;
     padding: 8px;
+  }
+
+  h3, p {
+    font-size: 15px;
+  }
+
+  .likeBtn {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
