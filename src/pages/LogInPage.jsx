@@ -49,7 +49,9 @@ const LogInPage = () => {
       <div className="login-page">
         {/* <h1 className="login-title">איזה כיף לראות אותך כאן!</h1>
         <div className="login-subtitle">השינוי מתחיל כאן</div> */}
-
+        <div className="login-page-header">
+        <h1>FRIENDLY</h1>
+        </div>
         <div className="container">
           <form onSubmit={handleLogin}>
             <h2>איזה כיף לראות אותך כאן!</h2>
