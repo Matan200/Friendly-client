@@ -24,7 +24,10 @@ const LogInPage = () => {
       );
       if (response.data.success) {
         alert("Login successful");
-        localStorage.setItem("editor", formLogin.email);
+        //change
+        const userData = response.data.user; // change
+        localStorage.setItem("editor", JSON.stringify(userData));
+
         navigate("/posts");
       } else {
         setError("Email or password is not correct");
@@ -50,7 +53,7 @@ const LogInPage = () => {
         {/* <h1 className="login-title">איזה כיף לראות אותך כאן!</h1>
         <div className="login-subtitle">השינוי מתחיל כאן</div> */}
         <div className="login-page-header">
-        <h1>FRIENDLY</h1>
+          <h1>FRIENDLY</h1>
         </div>
         <div className="container">
           <form onSubmit={handleLogin}>
