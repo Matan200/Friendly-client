@@ -34,6 +34,7 @@ const MenuBar = () => {
 
   // ✅ הוספה – טיפול בלחיצה על Donate
   const handleDonateClick = () => {
+    alert(userAge);
     if (userAge !== null && userAge < 18) {
       setShowPopup(true);
     } else {
