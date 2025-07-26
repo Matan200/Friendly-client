@@ -27,7 +27,6 @@ const LogInPage = () => {
         //change
         const userData = response.data.user; // change
         localStorage.setItem("editor", JSON.stringify(userData));
-
         navigate("/posts");
       } else {
         setError("Email or password is not correct");

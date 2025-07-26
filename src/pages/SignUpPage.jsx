@@ -39,7 +39,7 @@ const SignUpPage = () => {
   const [isUnderage, setIsUnderage] = useState(false);
   const [showPopup, setShowPopup] = useState(false); // מצב להצגת ה-Popup
   const [selectedAvatar, setSelectedAvatar] = useState(null);
-const [uploadedImage, setUploadedImage] = useState(null);
+  const [uploadedImage, setUploadedImage] = useState(null);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -118,13 +118,21 @@ const [uploadedImage, setUploadedImage] = useState(null);
         ...formData,
         ...popupData,
         picture: uploadedImage || selectedAvatar,
-
       });
       if (res.data.existMail) {
         setErrors({ email: res.data.message });
       } else {
         alert("User successfully created!");
-        localStorage.setItem("editor", formData.email);
+        const age =
+          new Date().getFullYear() - new Date(formData.birthdate).getFullYear();
+        const userType = age < 18 ? "student" : "adult";
+        const userData = {
+          email: formData.email,
+          userType: userType,
+        };
+
+        localStorage.setItem("editor", JSON.stringify(userData));
+        // localStorage.setItem("editor", formData.email, userType);
         navigate("/posts");
       }
     } catch (error) {
@@ -148,7 +156,7 @@ const [uploadedImage, setUploadedImage] = useState(null);
     setSelectedAvatar(avatar);
     setUploadedImage(null); // reset if previously uploaded
   };
-  
+
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -163,37 +171,39 @@ const [uploadedImage, setUploadedImage] = useState(null);
   return (
     <div className="container">
       <form onSubmit={handleSubmit}>
-      <div className="avatar-section">
-  <p>בחר תמונה אישית או אווטאר:</p>
+        <div className="avatar-section">
+          <p>בחר תמונה אישית או אווטאר:</p>
 
-  <input type="file" accept="image/*" onChange={handleImageUpload} />
+          <input type="file" accept="image/*" onChange={handleImageUpload} />
 
-  <div className="avatar-options">
-    {avatarOptions.map((avatar, index) => (
-      <img
-        key={index}
-        src={avatar}
-        alt={`avatar-${index}`}
-        className={`avatar-img ${selectedAvatar === avatar ? "selected" : ""}`}
-        onClick={() => handleAvatarSelect(avatar)}
-      />
-    ))}
-  </div>
+          <div className="avatar-options">
+            {avatarOptions.map((avatar, index) => (
+              <img
+                key={index}
+                src={avatar}
+                alt={`avatar-${index}`}
+                className={`avatar-img ${
+                  selectedAvatar === avatar ? "selected" : ""
+                }`}
+                onClick={() => handleAvatarSelect(avatar)}
+              />
+            ))}
+          </div>
 
-  {/* Show preview */}
-  {uploadedImage && (
-    <div className="preview-img">
-      <p>תמונה שהועלתה:</p>
-      <img src={uploadedImage} alt="uploaded" />
-    </div>
-  )}
-  {selectedAvatar && (
-    <div className="preview-img">
-      <p>אווטאר שנבחר:</p>
-      <img src={selectedAvatar} alt="selected-avatar" />
-    </div>
-  )}
-</div>
+          {/* Show preview */}
+          {uploadedImage && (
+            <div className="preview-img">
+              <p>תמונה שהועלתה:</p>
+              <img src={uploadedImage} alt="uploaded" />
+            </div>
+          )}
+          {selectedAvatar && (
+            <div className="preview-img">
+              <p>אווטאר שנבחר:</p>
+              <img src={selectedAvatar} alt="selected-avatar" />
+            </div>
+          )}
+        </div>
         <h1>Sign Up</h1>
         <div className="input-box">
           <span>Email</span>

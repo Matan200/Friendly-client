@@ -11,7 +11,7 @@ const MenuBar = () => {
 
   // ✅ הוספה:
   const [showPopup, setShowPopup] = useState(false);
-  const [userAge, setUserAge] = useState(null);
+  const [userAge, setUserType] = useState(null);
   // ⛔ סוף הוספה
 
   // ✅ הוספה – שליפת גיל המשתמש מה-localStorage
@@ -19,7 +19,7 @@ const MenuBar = () => {
     const storedUser = localStorage.getItem("editor");
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
-      setUserAge(parsedUser.age); // נניח שקיים שדה age
+      setUserType(parsedUser.userType); // נניח שקיים שדה age
     }
   }, []);
   // ⛔ סוף הוספה
@@ -34,7 +34,6 @@ const MenuBar = () => {
 
   // ✅ הוספה – טיפול בלחיצה על Donate
   const handleDonateClick = () => {
-    alert(userAge);
     if (userAge !== null && userAge < 18) {
       setShowPopup(true);
     } else {
