@@ -27,7 +27,9 @@ const MyPosts = () => {
         const postIds = user.posts || [];
 
         // שליפת כל הפוסטים
-        const postsRes = await axios.get(`${API_BASE}/api/posts`);
+        const postsRes = await axios.post(`${API_BASE}/api/posts/byUserType`, {
+          email: userEmail,
+        });
         const allPosts = postsRes.data;
 
         console.log("📝 כל הפוסטים שהתקבלו:", allPosts);
