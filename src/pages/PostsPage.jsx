@@ -195,14 +195,9 @@ const PostsPage = () => {
     }
   };
   const fetchFilteredPosts = async () => {
-    alert("usertype");
     const storedUser = JSON.parse(localStorage.getItem("editor"));
     const usertype = storedUser?.userType;
-    if (!usertype) {
-      alert("no usertype");
-    } else {
-      alert(usertype);
-    }
+
     try {
       const response = await axios.get(`${API_BASE}/api/posts/filter`, {
         params: {
@@ -215,7 +210,8 @@ const PostsPage = () => {
           usertype: usertype,
         },
       });
-      setPosts(response.data);
+      alert(response.data);
+      // setPosts(response.data);
     } catch (error) {
       console.error("Error fetching filtered posts:", error);
     }
