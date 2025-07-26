@@ -18,7 +18,7 @@ const PostsPage = () => {
   const [filterSchool, setFilterSchool] = useState("");
   const [filterMinAge, setFilterMinAge] = useState("");
   const [filterMaxAge, setFilterMaxAge] = useState("");
- // const [filterSubject, setFilterSubject] = useState("");
+  // const [filterSubject, setFilterSubject] = useState("");
   const [filterGender, setFilterGender] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false); // לפופאפ
 
@@ -26,20 +26,45 @@ const PostsPage = () => {
   const userId = localStorage.getItem("editor");
 
   // טעינת הפוסטים עם המידע של המשתמשים שפרסמו אותם
+  // useEffect(() => {
+  //   const fetchPosts = async () => {
+  //     try {
+  //       const response = await axios.get(`${API_BASE}/api/posts`);
+  //       const sortedPosts = response.data.sort(
+  //         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  //       );
+  //       setPosts(sortedPosts);
+  //     } catch (error) {
+  //       console.error("Error fetching posts:", error);
+  //     }
+  //   };
+  //   fetchPosts();
+  // }, []);
+
+  // new!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchFilteredByUserType = async () => {
       try {
-        const response = await axios.get(`${API_BASE}/api/posts`);
+        const storedUser = JSON.parse(localStorage.getItem("editor"));
+        if (!storedUser?.email) return;
+
+        const response = await axios.post(`${API_BASE}/api/posts/byUserType`, {
+          email: storedUser.email,
+        });
+
         const sortedPosts = response.data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
         setPosts(sortedPosts);
       } catch (error) {
-        console.error("Error fetching posts:", error);
+        console.error("Error fetching user-type filtered posts:", error);
       }
     };
-    fetchPosts();
+
+    fetchFilteredByUserType();
   }, []);
+
+  // end of new!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   // עדכון תוכן הפוסט
   const handlePostChange = (e) => {
@@ -93,9 +118,7 @@ const PostsPage = () => {
   // לייק לפוסט
   const handleClickLike = async (postId) => {
     try {
-      const response = await axios.put(
-        `${API_BASE}/api/posts/${postId}/like`
-      );
+      const response = await axios.put(`${API_BASE}/api/posts/${postId}/like`);
       const updatedPost = response.data;
       setPosts((prevPosts) =>
         prevPosts.map((post) =>
@@ -150,22 +173,22 @@ const PostsPage = () => {
     }
   };
   const fetchFilteredPosts = async () => {
-  try {
-    const response = await axios.get(`${API_BASE}/api/posts/filter`, {
-      params: {
-        city: filterCity,
-        school: filterSchool,
-        minAge: filterMinAge,
-        maxAge: filterMaxAge,
-       // subject: filterSubject,
-        gender: filterGender,
-      },
-    });
-    setPosts(response.data);
-  } catch (error) {
-    console.error("Error fetching filtered posts:", error);
-  }
-};
+    try {
+      const response = await axios.get(`${API_BASE}/api/posts/filter`, {
+        params: {
+          city: filterCity,
+          school: filterSchool,
+          minAge: filterMinAge,
+          maxAge: filterMaxAge,
+          // subject: filterSubject,
+          gender: filterGender,
+        },
+      });
+      setPosts(response.data);
+    } catch (error) {
+      console.error("Error fetching filtered posts:", error);
+    }
+  };
 
   // תפריט
   const toggleMenu = () => {
@@ -217,103 +240,97 @@ const PostsPage = () => {
           </Button>
         </div>
 
-
-
         <Button onClick={() => setIsFilterOpen(true)}>🔍 סינון פוסטים</Button>
 
-{isFilterOpen && (
-  <div className="modal-background">
-    <div className="modal-content">
-      <h3>סינון פוסטים</h3>
+        {isFilterOpen && (
+          <div className="modal-background">
+            <div className="modal-content">
+              <h3>סינון פוסטים</h3>
 
-      <input
-        type="text"
-        placeholder="עיר"
-        value={filterCity}
-        onChange={(e) => setFilterCity(e.target.value)}
-      />
+              <input
+                type="text"
+                placeholder="עיר"
+                value={filterCity}
+                onChange={(e) => setFilterCity(e.target.value)}
+              />
 
-      <input
-        type="text"
-        placeholder="בית ספר"
-        value={filterSchool}
-        onChange={(e) => setFilterSchool(e.target.value)}
-      />
+              <input
+                type="text"
+                placeholder="בית ספר"
+                value={filterSchool}
+                onChange={(e) => setFilterSchool(e.target.value)}
+              />
 
-      <input
-        type="number"
-        placeholder="גיל מינימלי"
-        value={filterMinAge}
-        onChange={(e) => setFilterMinAge(e.target.value)}
-      />
+              <input
+                type="number"
+                placeholder="גיל מינימלי"
+                value={filterMinAge}
+                onChange={(e) => setFilterMinAge(e.target.value)}
+              />
 
-      <input
-        type="number"
-        placeholder="גיל מקסימלי"
-        value={filterMaxAge}
-        onChange={(e) => setFilterMaxAge(e.target.value)}
-      />
+              <input
+                type="number"
+                placeholder="גיל מקסימלי"
+                value={filterMaxAge}
+                onChange={(e) => setFilterMaxAge(e.target.value)}
+              />
 
-      {/* <input
+              {/* <input
         type="text"
         placeholder="נושא הפוסט"
         value={filterSubject}
         onChange={(e) => setFilterSubject(e.target.value)}
       /> */}
 
-      <select
-        value={filterGender}
-        onChange={(e) => setFilterGender(e.target.value)}
-      >
-        <option value="">בחר מגדר</option>
-        <option value="male">MALE</option>
-        <option value="female">FEMALE</option>
-        <option value="other">OTHER</option>
-      </select>
+              <select
+                value={filterGender}
+                onChange={(e) => setFilterGender(e.target.value)}
+              >
+                <option value="">בחר מגדר</option>
+                <option value="male">MALE</option>
+                <option value="female">FEMALE</option>
+                <option value="other">OTHER</option>
+              </select>
 
-      <div className="filter-buttons-container">
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            fetchFilteredPosts();
-            setIsFilterOpen(false);
-          }}
-        >
-          סנן
-        </Button>
+              <div className="filter-buttons-container">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    fetchFilteredPosts();
+                    setIsFilterOpen(false);
+                  }}
+                >
+                  סנן
+                </Button>
 
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={() => setIsFilterOpen(false)}
-        >
-          ביטול
-        </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => setIsFilterOpen(false)}
+                >
+                  ביטול
+                </Button>
 
-        <Button
-          variant="outlined"
-          onClick={() => {
-            setFilterCity("");
-            setFilterSchool("");
-            setFilterMinAge("");
-            setFilterMaxAge("");
-           // setFilterSubject("");
-            setFilterGender("");
-            fetchPosts(); // שליפה מחדש של כל הפוסטים
-            setIsFilterOpen(false); // סגירת הפופאפ
-          }}
-        >
-          איפוס סינון
-        </Button>
-      </div>
-    </div>
-  </div>
-)}
-
-
-
-
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    setFilterCity("");
+                    setFilterSchool("");
+                    setFilterMinAge("");
+                    setFilterMaxAge("");
+                    // setFilterSubject("");
+                    setFilterGender("");
+                    fetchPosts(); // שליפה מחדש של כל הפוסטים
+                    setIsFilterOpen(false); // סגירת הפופאפ
+                  }}
+                >
+                  איפוס סינון
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="posts-container">
           {posts?.map((post) => (
@@ -322,12 +339,12 @@ const PostsPage = () => {
               <h3>{post.postContent}</h3>
               <p>Posted by: {post.editor?.userName || "Unknown User"}</p>
               <p>
-  Posted on:{" "}
-  {new Date(post.createdAt).toLocaleString("he-IL", {
-    dateStyle: "short",
-    timeStyle: "short",
-  })}
-</p>
+                Posted on:{" "}
+                {new Date(post.createdAt).toLocaleString("he-IL", {
+                  dateStyle: "short",
+                  timeStyle: "short",
+                })}
+              </p>
               <div className="comment-section">
                 <textarea
                   className="comment-field"
@@ -347,7 +364,7 @@ const PostsPage = () => {
                   </Button>
                   <p>{post.likes} Likes</p>
                 </div>
-                
+
                 <div className="comments">
                   {post.comments
                     ?.slice(
@@ -375,9 +392,8 @@ const PostsPage = () => {
                 </div>
               </div>
               <div className="report-button">
-              <Button style={{ color: "red" }}>REPORT</Button>
-
-                  </div>
+                <Button style={{ color: "red" }}>REPORT</Button>
+              </div>
             </div>
           ))}
         </div>
