@@ -7,8 +7,9 @@ const MyPosts = () => {
   const [userPosts, setUserPosts] = useState([]);
   const [userName, setUserName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const userEmail = localStorage.getItem("editor"); // המייל של המשתמש
-
+  // const userEmail = localStorage.getItem("editor"); // המייל של המשתמש
+  const storedUser = localStorage.getItem("editor");
+  const userEmail = storedUser ? JSON.parse(storedUser).email : null;
   useEffect(() => {
     const fetchUserPosts = async () => {
       try {
@@ -53,32 +54,30 @@ const MyPosts = () => {
 
   return (
     <div className="main-container">
+      <div className="myposts-container">
+        <h2>הפוסטים שלי - {userName}</h2>
 
-    <div className="myposts-container">
-      <h2>הפוסטים שלי - {userName}</h2>
-
-      {isLoading ? (
-        <p>טוען פוסטים...</p>
-      ) : userPosts.length === 0 ? (
-        <p>לא נמצאו פוסטים.</p>
-      ) : (
-        userPosts.map((post) => (
-          <div key={post._id} className="post-card">
-            <h3>{post.subject}</h3>
-            <p>{post.postContent}</p>
-            <p>
-              <strong>תאריך:</strong>{" "}
-              {new Date(post.createdAt).toLocaleDateString("he-IL")}
-            </p>
-            <p>
-              <strong>לייקים:</strong> {post.likes}
-            </p>
-          </div>
-        ))
-      )}
+        {isLoading ? (
+          <p>טוען פוסטים...</p>
+        ) : userPosts.length === 0 ? (
+          <p>לא נמצאו פוסטים.</p>
+        ) : (
+          userPosts.map((post) => (
+            <div key={post._id} className="post-card">
+              <h3>{post.subject}</h3>
+              <p>{post.postContent}</p>
+              <p>
+                <strong>תאריך:</strong>{" "}
+                {new Date(post.createdAt).toLocaleDateString("he-IL")}
+              </p>
+              <p>
+                <strong>לייקים:</strong> {post.likes}
+              </p>
+            </div>
+          ))
+        )}
+      </div>
     </div>
-    </div>
-
   );
 };
 
