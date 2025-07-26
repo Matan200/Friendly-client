@@ -110,7 +110,7 @@ const PostsPage = () => {
 
   // פרסום פוסט חדש
   const handlePostsubmit = async () => {
-    // const storedUser = JSON.parse(localStorage.getItem("editor"));
+    const storedUser = JSON.parse(localStorage.getItem("editor"));
     const userId = storedUser?.email;
     if (!userId) {
       alert("You must be logged in to create a post.");
