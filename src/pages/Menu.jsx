@@ -87,8 +87,12 @@ const MenuBar = () => {
       {showPopup && (
         <div className="popup-overlay">
           <div className="popup">
-            <h3>לא ניתן לתרום</h3>
-            <p>התרומה פתוחה רק למשתמשים מעל גיל 18.</p>
+            <h3 style={{ color: "blue" }}>לא ניתן לתרום</h3>
+            <p style={{ color: "blue" }}>
+              התרומה פתוחה רק למשתמשים מעל גיל 18.
+            </p>
+
+            {/* <p>התרומה פתוחה רק למשתמשים מעל גיל 18.</p> */}
             <button onClick={() => setShowPopup(false)}>סגור</button>
           </div>
         </div>
