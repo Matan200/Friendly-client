@@ -24,6 +24,7 @@ const PostsPage = () => {
 
   // קבלת מזהה המשתמש המחובר מה-LocalStorage
   // const userId = localStorage.getItem("editor");
+  const storedUser = JSON.parse(localStorage.getItem("editor"));
 
   // טעינת הפוסטים עם המידע של המשתמשים שפרסמו אותם
   // useEffect(() => {
@@ -45,7 +46,7 @@ const PostsPage = () => {
   useEffect(() => {
     const fetchFilteredByUserType = async () => {
       try {
-        const storedUser = JSON.parse(localStorage.getItem("editor"));
+        // const storedUser = JSON.parse(localStorage.getItem("editor"));
         if (!storedUser?.email) return;
 
         const response = await axios.post(`${API_BASE}/api/posts/byUserType`, {
@@ -109,7 +110,7 @@ const PostsPage = () => {
 
   // פרסום פוסט חדש
   const handlePostsubmit = async () => {
-    const storedUser = JSON.parse(localStorage.getItem("editor"));
+    // const storedUser = JSON.parse(localStorage.getItem("editor"));
     const userId = storedUser?.email;
     if (!userId) {
       alert("You must be logged in to create a post.");
@@ -169,9 +170,10 @@ const PostsPage = () => {
   // הוספת תגובה לפוסט
   const handleAddComment = async (postId) => {
     //const reeees = getUserId(userId);
+    const userId = storedUser?.email;
 
     const comment = newComment[postId];
-    alert(userId);
+    // alert(userId);
     if (!comment) return;
 
     try {
