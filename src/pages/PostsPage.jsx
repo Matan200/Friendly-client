@@ -195,6 +195,9 @@ const PostsPage = () => {
     }
   };
   const fetchFilteredPosts = async () => {
+    const storedUser = JSON.parse(localStorage.getItem("editor"));
+    const userId = storedUser?.userType;
+
     try {
       const response = await axios.get(`${API_BASE}/api/posts/filter`, {
         params: {
@@ -204,7 +207,7 @@ const PostsPage = () => {
           maxAge: filterMaxAge,
           // subject: filterSubject,
           gender: filterGender,
-          email: storedUser.userType,
+          email: userId,
         },
       });
       setPosts(response.data);
