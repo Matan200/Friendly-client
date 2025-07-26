@@ -82,19 +82,18 @@ const MenuBar = () => {
         <button onClick={logoutFunc} className="logout-button">
           Logout
         </button>
-
-        {/* ✅ הוספה – חלון popup */}
-        {showPopup && (
-          <div className="popup-overlay">
-            <div className="popup">
-              <h3>לא ניתן לתרום</h3>
-              <p>התרומה פתוחה רק למשתמשים מעל גיל 18.</p>
-              <button onClick={() => setShowPopup(false)}>סגור</button>
-            </div>
-          </div>
-        )}
-        {/* ⛔ סוף הוספה */}
       </nav>
+      {/* ✅ הוספה – חלון popup */}
+      {showPopup && (
+        <div className="popup-overlay">
+          <div className="popup">
+            <h3>לא ניתן לתרום</h3>
+            <p>התרומה פתוחה רק למשתמשים מעל גיל 18.</p>
+            <button onClick={() => setShowPopup(false)}>סגור</button>
+          </div>
+        </div>
+      )}
+      {/* ⛔ סוף הוספה */}
     </header>
   );
 };
