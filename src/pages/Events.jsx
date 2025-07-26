@@ -1,4 +1,4 @@
-import "./events.css"; 
+import "./events.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Button } from "@mui/material";
@@ -9,8 +9,9 @@ const EventsPage = () => {
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [userObjectId, setUserObjectId] = useState("");
   const [expandedEvent, setExpandedEvent] = useState(null);
-  const userEmail = localStorage.getItem("editor");
-
+  // const userEmail = localStorage.getItem("editor");
+  const storedUser = localStorage.getItem("editor");
+  const userEmail = storedUser ? JSON.parse(storedUser).email : null;
   // סינון
   const [filterCity, setFilterCity] = useState("");
   const [filterGender, setFilterGender] = useState("");
@@ -20,7 +21,9 @@ const EventsPage = () => {
   useEffect(() => {
     const fetchUserAndEvents = async () => {
       try {
-        const userRes = await axios.get(`${API_BASE}/api/users/findByEmail/${userEmail}`);
+        const userRes = await axios.get(
+          `${API_BASE}/api/users/findByEmail/${userEmail}`
+        );
         setUserObjectId(userRes.data._id);
 
         const eventsRes = await axios.get(`${API_BASE}/api/events`);
@@ -88,8 +91,8 @@ const EventsPage = () => {
     }
 
     if (filterGender.trim()) {
-      filtered = filtered.filter((event) =>
-        event.gender.toLowerCase() === filterGender.toLowerCase()
+      filtered = filtered.filter(
+        (event) => event.gender.toLowerCase() === filterGender.toLowerCase()
       );
     }
 
@@ -125,7 +128,10 @@ const EventsPage = () => {
           value={filterCity}
           onChange={(e) => setFilterCity(e.target.value)}
         />
-        <select value={filterGender} onChange={(e) => setFilterGender(e.target.value)}>
+        <select
+          value={filterGender}
+          onChange={(e) => setFilterGender(e.target.value)}
+        >
           <option value="">בחר מגדר</option>
           <option value="male">זכר</option>
           <option value="female">נקבה</option>
@@ -143,8 +149,12 @@ const EventsPage = () => {
           value={filterMaxAge}
           onChange={(e) => setFilterMaxAge(e.target.value)}
         />
-        <Button variant="contained" onClick={applyFilters}>סנן</Button>
-        <Button variant="outlined" onClick={resetFilters}>איפוס</Button>
+        <Button variant="contained" onClick={applyFilters}>
+          סנן
+        </Button>
+        <Button variant="outlined" onClick={resetFilters}>
+          איפוס
+        </Button>
       </div>
 
       {filteredEvents.length === 0 ? (
@@ -158,18 +168,26 @@ const EventsPage = () => {
               <div className="event-header">
                 <h2>{event.eventName}</h2>
                 <p>
-  📍{" "}
-  <a
-    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.place)}`}
-    target="_blank"
-    rel="noopener noreferrer"
-    style={{ color: "inherit", textDecoration: "none", fontWeight: "bold" }}
-  >
-    {event.place}
-  </a>
-</p>
+                  📍{" "}
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                      event.place
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      color: "inherit",
+                      textDecoration: "none",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {event.place}
+                  </a>
+                </p>
 
-                <p>🕒 {event.hour} | 📅 {event.date}</p>
+                <p>
+                  🕒 {event.hour} | 📅 {event.date}
+                </p>
 
                 <Button
                   className="event-button"
@@ -180,9 +198,16 @@ const EventsPage = () => {
 
                 {expandedEvent === event._id && (
                   <div className="event-details">
-                    <p><strong>🧑‍🤝‍🧑 גילאים:</strong> {event.age[0]} - {event.age[1]}</p>
-                    <p><strong>👥 מגדר:</strong> {event.gender}</p>
-                    <p><strong>📜 פרטים נוספים:</strong> {event.details}</p>
+                    <p>
+                      <strong>🧑‍🤝‍🧑 גילאים:</strong> {event.age[0]} -{" "}
+                      {event.age[1]}
+                    </p>
+                    <p>
+                      <strong>👥 מגדר:</strong> {event.gender}
+                    </p>
+                    <p>
+                      <strong>📜 פרטים נוספים:</strong> {event.details}
+                    </p>
                   </div>
                 )}
 

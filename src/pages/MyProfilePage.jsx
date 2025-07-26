@@ -10,12 +10,16 @@ const MyProfilePage = () => {
   const [newImage, setNewImage] = useState(null);
   const fileInputRef = useRef();
 
-  const userId = localStorage.getItem("editor");
+  // const userId = localStorage.getItem("editor");
+  const storedUser = localStorage.getItem("editor");
+  const userId = storedUser ? JSON.parse(storedUser).email : null;
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`${API_BASE}/api/users/findByEmail/${userId}`);
+        const response = await axios.get(
+          `${API_BASE}/api/users/findByEmail/${userId}`
+        );
         setUser(response.data);
       } catch (error) {
         console.error("שגיאה בשליפת משתמש:", error);
@@ -49,7 +53,10 @@ const MyProfilePage = () => {
     formData.append("avatar", newImage);
 
     try {
-      const response = await axios.put(`${API_BASE}/api/users/upload-avatar`, formData);
+      const response = await axios.put(
+        `${API_BASE}/api/users/upload-avatar`,
+        formData
+      );
       setUser((prev) => ({ ...prev, picture: response.data.newAvatar }));
       alert("התמונה הועלתה בהצלחה!");
     } catch (error) {
@@ -73,19 +80,41 @@ const MyProfilePage = () => {
         </div>
 
         {/* העלאת תמונה */}
-        <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} />
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+        />
         <Button variant="outlined" onClick={handleUpload}>
           עדכן תמונה
         </Button>
 
-        <p><strong>שם:</strong> {user.userName}</p>
-        <p><strong>אימייל:</strong> {user.email}</p>
-        <p><strong>תעודת זהות:</strong> {user.idnumber}</p>
-        <p><strong>מגדר:</strong> {user.gender}</p>
-        <p><strong>כתובת:</strong> {user.address}</p>
-        <p><strong>בית ספר:</strong> {user.school || "לא תלמיד"}</p>
-        <p><strong>תאריך לידה:</strong> {new Date(user.birthdate).toLocaleDateString("he-IL")}</p>
-        <p><strong>גיל:</strong> {calculateAge(user.birthdate)}</p>
+        <p>
+          <strong>שם:</strong> {user.userName}
+        </p>
+        <p>
+          <strong>אימייל:</strong> {user.email}
+        </p>
+        <p>
+          <strong>תעודת זהות:</strong> {user.idnumber}
+        </p>
+        <p>
+          <strong>מגדר:</strong> {user.gender}
+        </p>
+        <p>
+          <strong>כתובת:</strong> {user.address}
+        </p>
+        <p>
+          <strong>בית ספר:</strong> {user.school || "לא תלמיד"}
+        </p>
+        <p>
+          <strong>תאריך לידה:</strong>{" "}
+          {new Date(user.birthdate).toLocaleDateString("he-IL")}
+        </p>
+        <p>
+          <strong>גיל:</strong> {calculateAge(user.birthdate)}
+        </p>
       </div>
     </div>
   );
