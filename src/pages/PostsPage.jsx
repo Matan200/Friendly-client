@@ -204,6 +204,7 @@ const PostsPage = () => {
           maxAge: filterMaxAge,
           // subject: filterSubject,
           gender: filterGender,
+          email: storedUser.userType,
         },
       });
       setPosts(response.data);
