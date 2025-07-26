@@ -23,7 +23,7 @@ const PostsPage = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false); // לפופאפ
 
   // קבלת מזהה המשתמש המחובר מה-LocalStorage
-  const userId = localStorage.getItem("editor");
+  // const userId = localStorage.getItem("editor");
 
   // טעינת הפוסטים עם המידע של המשתמשים שפרסמו אותם
   // useEffect(() => {
@@ -77,20 +77,40 @@ const PostsPage = () => {
   // };
 
   // פונקציה לשליפת פוסטים מעודכנים
-  const fetchPosts = async () => {
+  // const fetchPosts = async () => {
+  //   try {
+  //     const response = await axios.get(`${API_BASE}/api/posts/byUserType`);
+  //     const sortedPosts = response.data.sort(
+  //       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  //     );
+  //     setPosts(sortedPosts);
+  //   } catch (error) {
+  //     console.error("Error fetching posts:", error);
+  //   }
+  // };
+
+  const fetchFilteredByUserType = async () => {
     try {
-      const response = await axios.get(`${API_BASE}/api/posts`);
+      const storedUser = JSON.parse(localStorage.getItem("editor"));
+      if (!storedUser?.email) return;
+
+      const response = await axios.post(`${API_BASE}/api/posts/byUserType`, {
+        email: storedUser.email,
+      });
+
       const sortedPosts = response.data.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
       setPosts(sortedPosts);
     } catch (error) {
-      console.error("Error fetching posts:", error);
+      console.error("Error fetching user-type filtered posts:", error);
     }
   };
 
   // פרסום פוסט חדש
   const handlePostsubmit = async () => {
+    const storedUser = JSON.parse(localStorage.getItem("editor"));
+    const userId = storedUser?.email;
     if (!userId) {
       alert("You must be logged in to create a post.");
       return;
@@ -105,7 +125,7 @@ const PostsPage = () => {
       alert("Post created successfully!");
       // alert(response.data);
       // עדכון הפוסטים עם קריאה מחדש כדי לוודא שהפוסט יתווסף ויופיע
-      fetchPosts();
+      fetchFilteredByUserType();
 
       // ריקון השדות של הפוסט החדש
       setNewPost("");
@@ -321,7 +341,7 @@ const PostsPage = () => {
                     setFilterMaxAge("");
                     // setFilterSubject("");
                     setFilterGender("");
-                    fetchPosts(); // שליפה מחדש של כל הפוסטים
+                    fetchFilteredByUserType(); // שליפה מחדש של כל הפוסטים
                     setIsFilterOpen(false); // סגירת הפופאפ
                   }}
                 >
