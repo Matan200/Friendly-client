@@ -11,7 +11,7 @@ const MenuBar = () => {
 
   // ✅ הוספה:
   const [showPopup, setShowPopup] = useState(false);
-  const [userAge, setUserType] = useState(null);
+  const [userType, setUserType] = useState(null);
   // ⛔ סוף הוספה
 
   // ✅ הוספה – שליפת גיל המשתמש מה-localStorage
@@ -34,7 +34,7 @@ const MenuBar = () => {
 
   // ✅ הוספה – טיפול בלחיצה על Donate
   const handleDonateClick = () => {
-    if (userAge !== null && userAge < 18) {
+    if (userType !== null && userType == "student") {
       setShowPopup(true);
     } else {
       navigate("/donate");
