@@ -204,18 +204,18 @@ const SignUpPage = () => {
             </div>
           )}
         </div>
-        <h1>Sign Up</h1>
+        <h1>הרשמה</h1>
         <div className="input-box">
-          <span>Email</span>
+          <span>אימייל</span>
           <div className="input-with-tooltip">
             <input
               type="text"
               name="email"
-              placeholder="Enter your email"
+              placeholder="הכנס את האימייל שלך"
               value={formData.email}
               onChange={handleChange}
             />
-            <Tooltip title="Please enter your email address" arrow>
+            <Tooltip title="בבקשה הכנס אימייל תקין" arrow>
               <IconButton>
                 <HelpOutlineIcon />
               </IconButton>
@@ -225,16 +225,16 @@ const SignUpPage = () => {
         </div>
 
         <div className="input-box">
-          <span>Id</span>
+          <span>תעודת זהותd</span>
           <div className="input-with-tooltip">
             <input
               type="text"
               name="idnumber"
-              placeholder="Enter your id"
+              placeholder="הכנס את המספר זהות שלך"
               value={formData.idnumber}
               onChange={handleChange}
             />
-            <Tooltip title="Please enter your 9-digit ID number" arrow>
+            <Tooltip title="בבקשה הכנס 9 ספרות תעודת הזהות שלך" arrow>
               <IconButton>
                 <HelpOutlineIcon />
               </IconButton>
@@ -244,7 +244,7 @@ const SignUpPage = () => {
         </div>
 
         <div className="gender-radio">
-          <span>Gender</span>
+          <span>מגדר</span>
           <label>
             <input
               type="radio"
@@ -253,7 +253,7 @@ const SignUpPage = () => {
               checked={formData.gender === "male"}
               onChange={handleChange}
             />
-            male
+            זכר
           </label>
           <label>
             <input
@@ -263,7 +263,7 @@ const SignUpPage = () => {
               checked={formData.gender === "female"}
               onChange={handleChange}
             />
-            female
+            נקבה
           </label>
           <label>
             <input
@@ -273,13 +273,13 @@ const SignUpPage = () => {
               checked={formData.gender === "other"}
               onChange={handleChange}
             />
-            other
+            אחר
           </label>
           {errors.gender && <p className="error">{errors.gender}</p>}
         </div>
 
         <div className="input-box">
-          <span>Address</span>
+          <span>כתובת</span>
           <div className="input-with-tooltip">
             <input
               type="text"
@@ -288,7 +288,7 @@ const SignUpPage = () => {
               value={formData.address}
               onChange={handleChange}
             />
-            <Tooltip title="Please enter your home address" arrow>
+            <Tooltip title="בבקשה הכנס את כתובת המגורים" arrow>
               <IconButton>
                 <HelpOutlineIcon />
               </IconButton>
@@ -298,7 +298,7 @@ const SignUpPage = () => {
         </div>
 
         <div className="input-box">
-          <span>Date of Birth</span>
+          <span>תאריך לידה</span>
           <input
             type="date"
             name="birthdate"
@@ -310,11 +310,11 @@ const SignUpPage = () => {
 
         {isUnderage && (
           <div className="input-box">
-            <span>School Name</span>
+            <span>בית ספר</span>
             <input
               type="text"
               name="school"
-              placeholder="Enter your school name"
+              placeholder="הכנס את בית הספר שלך"
               value={formData.school}
               onChange={handleChange}
             />
@@ -346,7 +346,7 @@ const SignUpPage = () => {
         </div>
 
         <Button type="submit" className="btn">
-          Sign Up
+          רשום אותי
         </Button>
       </form>
 
@@ -355,7 +355,7 @@ const SignUpPage = () => {
         <DialogTitle>Complete Registration</DialogTitle>
         <DialogContent>
           <TextField
-            label="User Name"
+            label="שם משתמש"
             name="userName"
             fullWidth
             value={popupData.userName}
@@ -365,7 +365,7 @@ const SignUpPage = () => {
             margin="dense"
           />
           <TextField
-            label="Password"
+            label="סיסמא"
             name="password"
             type="password"
             fullWidth
