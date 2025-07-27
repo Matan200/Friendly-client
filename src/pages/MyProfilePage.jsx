@@ -139,9 +139,9 @@ const MyProfilePage = () => {
         </p>
         <p>
           <strong className="label-bold-myprofile">מגדר:</strong>{" "}
-          {user.gender === "MALE"
+          {user.gender === "male"
             ? "זכר"
-            : user.gender === "FEMALE"
+            : user.gender === "female"
             ? "נקבה"
             : "אחר"}
         </p>

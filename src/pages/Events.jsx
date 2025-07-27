@@ -133,9 +133,10 @@ const EventsPage = () => {
           onChange={(e) => setFilterGender(e.target.value)}
         >
           <option value="">בחר מגדר</option>
-          <option value="male">זכר</option>
-          <option value="female">נקבה</option>
-          <option value="other">אחר</option>
+          <option value="בנים">בנים</option>
+          <option value="בנות">בנות</option>
+          <option value="אחר">אחר</option>
+          <option value="כולם">כולם</option>
         </select>
         <input
           type="number"
