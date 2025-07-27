@@ -7,6 +7,8 @@ const API_BASE = process.env.REACT_APP_API || "http://localhost:4000";
 
 const MyProfilePage = () => {
   const [user, setUser] = useState(null);
+  const [editField, setEditField] = useState(null);
+
   const [newImage, setNewImage] = useState(null);
   const fileInputRef = useRef();
 
@@ -117,12 +119,21 @@ const MyProfilePage = () => {
         </p>
         <div>
           <label>כתובת:</label>
-          <input
-            type="text"
-            value={user.address}
-            onChange={(e) => setUser({ ...user, address: e.target.value })}
-          />
-          <Button onClick={() => handleFieldUpdate("address")}>עדכן</Button>
+          {editField === "address" ? (
+            <>
+              <input
+                type="text"
+                value={user.address}
+                onChange={(e) => setUser({ ...user, address: e.target.value })}
+              />
+              <Button onClick={() => handleFieldUpdate("address")}>עדכן</Button>
+            </>
+          ) : (
+            <>
+              <span>{user.address}</span>
+              <Button onClick={() => setEditField("address")}>ערוך</Button>
+            </>
+          )}
         </div>
         <p>
           <strong>בית ספר:</strong> {user.school || "לא תלמיד"}
