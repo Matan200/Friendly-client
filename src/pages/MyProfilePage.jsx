@@ -42,6 +42,19 @@ const MyProfilePage = () => {
     return age;
   };
 
+  const handleFieldUpdate = async (field) => {
+    try {
+      const response = await axios.put(`${API_BASE}/api/users/update`, {
+        email: user.email,
+        [field]: user[field],
+      });
+      setUser(response.data); // עדכון מצב הפרופיל עם הערכים החדשים
+      setEditField(null); // סגירת מצב העריכה
+      alert("השדה עודכן בהצלחה!");
+    } catch (error) {
+      console.error("שגיאה בעדכון השדה:", error);
+    }
+  };
   const handleFileChange = (e) => {
     setNewImage(e.target.files[0]);
   };
@@ -102,9 +115,15 @@ const MyProfilePage = () => {
         <p>
           <strong>מגדר:</strong> {user.gender}
         </p>
-        <p>
-          <strong>כתובת:</strong> {user.address}
-        </p>
+        <div>
+          <label>כתובת:</label>
+          <input
+            type="text"
+            value={user.address}
+            onChange={(e) => setUser({ ...user, address: e.target.value })}
+          />
+          <Button onClick={() => handleFieldUpdate("address")}>עדכן</Button>
+        </div>
         <p>
           <strong>בית ספר:</strong> {user.school || "לא תלמיד"}
         </p>

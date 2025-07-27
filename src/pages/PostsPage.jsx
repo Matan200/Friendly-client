@@ -197,8 +197,7 @@ const PostsPage = () => {
   const fetchFilteredPosts = async () => {
     const storedUser = JSON.parse(localStorage.getItem("editor"));
     const usertype = storedUser?.userType;
-    alert(usertype);
-    alert(typeof usertype);
+
     try {
       const response = await axios.get(`${API_BASE}/api/posts/filter`, {
         params: {
@@ -210,7 +209,6 @@ const PostsPage = () => {
           usertype: usertype,
         },
       });
-      alert("after the back");
       setPosts(response.data);
     } catch (error) {
       console.error("Error fetching filtered posts:", error);
