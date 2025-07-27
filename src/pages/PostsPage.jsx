@@ -208,9 +208,10 @@ const PostsPage = () => {
           maxAge: filterMaxAge,
           // subject: filterSubject,
           gender: filterGender,
-          // usertype: usertype,
+          usertype: usertype,
         },
       });
+      alert("after the back");
       setPosts(response.data);
     } catch (error) {
       console.error("Error fetching filtered posts:", error);
