@@ -198,7 +198,7 @@ const PostsPage = () => {
     const storedUser = JSON.parse(localStorage.getItem("editor"));
     const usertype = storedUser?.userType;
     alert(usertype);
-    alert(typeof userType);
+    alert(typeof usertype);
     try {
       const response = await axios.get(`${API_BASE}/api/posts/filter`, {
         params: {
