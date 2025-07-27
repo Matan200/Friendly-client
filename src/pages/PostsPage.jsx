@@ -206,7 +206,6 @@ const PostsPage = () => {
           school: filterSchool,
           minAge: filterMinAge,
           maxAge: filterMaxAge,
-          // subject: filterSubject,
           gender: filterGender,
           //usertype: usertype,
         },
@@ -218,26 +217,6 @@ const PostsPage = () => {
     }
   };
 
-  // תפריט
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const handleFilter = () => {
-    alert("Filter options coming soon!");
-  };
-
-  const handleDonate = () => {
-    alert("Redirecting to Donate page...");
-  };
-
-  const handleProfile = () => {
-    alert("Opening My Profile...");
-  };
-
-  const handleExtraInfo = () => {
-    alert("Showing Extra Info...");
-  };
   const toggleComments = (postId) => {
     setExpandedPosts((prev) => ({
       ...prev,
