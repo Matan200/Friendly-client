@@ -210,8 +210,7 @@ const PostsPage = () => {
           usertype: usertype,
         },
       });
-      alert(response.data);
-      // setPosts(response.data);
+      setPosts(response.data);
     } catch (error) {
       console.error("Error fetching filtered posts:", error);
     }
