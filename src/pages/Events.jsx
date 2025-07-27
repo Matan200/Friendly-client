@@ -12,6 +12,8 @@ const EventsPage = () => {
   // const userEmail = localStorage.getItem("editor");
   const storedUser = localStorage.getItem("editor");
   const userEmail = storedUser ? JSON.parse(storedUser).email : null;
+  const usertype = storedUser ? JSON.parse(storedUser).userType : null;
+
   // סינון
   const [filterCity, setFilterCity] = useState("");
   const [filterGender, setFilterGender] = useState("");
@@ -25,7 +27,11 @@ const EventsPage = () => {
           `${API_BASE}/api/users/findByEmail/${userEmail}`
         );
         setUserObjectId(userRes.data._id);
-
+        if (usertype !== "student") {
+          setEvents([]); // לא מציג אירועים
+          setFilteredEvents([]);
+          return;
+        }
         const eventsRes = await axios.get(`${API_BASE}/api/events`);
         setEvents(eventsRes.data);
         setFilteredEvents(eventsRes.data);
