@@ -1,7 +1,7 @@
 .profile-container {
   max-width: 500px;
   margin: 80px auto; /* יותר רווח מהחלק העליון */
-  background-color: #d12424;
+  background: linear-gradient(135deg, #d12424, #f05a28, #ff66cc, #8e2de2);
   padding: 40px 30px;
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -41,4 +41,23 @@
   border-radius: 50%;
   border: 3px solid #5d4bff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+.profile-container div {
+  margin: 10px 0;
+  font-size: 18px;
+  line-height: 1.6;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  color: white;
+}
+
+.profile-container input {
+  font-size: 16px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: none;
 }
