@@ -8,7 +8,7 @@
   direction: rtl;
   text-align: right;
   color: white; /* טקסט לבן */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .profile-container h2 {
@@ -19,6 +19,9 @@
   padding-bottom: 10px;
 }
 
+.label-bold-myprofile {
+  font-weight: bold;
+}
 .profile-container p {
   margin: 10px 0;
   font-size: 18px;

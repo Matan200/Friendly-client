@@ -86,31 +86,53 @@ const MyProfilePage = () => {
       <div className="profile-container">
         <h2>הפרופיל שלי</h2>
 
-        <div className="profile-image">
-          {user.picture ? (
-            <img src={user.picture} alt="Profile Avatar" />
+        <div>
+          <label className="label-bold-myprofile">תמונה:</label>
+          {editField === "picture" ? (
+            <>
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+              />
+              <Button onClick={handleUpload}>עדכן</Button>
+            </>
           ) : (
-            <p>אין תמונה</p>
+            <>
+              <div className="profile-image">
+                {user.picture ? (
+                  <img src={user.picture} alt="Profile Avatar" />
+                ) : (
+                  <p>אין תמונה</p>
+                )}
+              </div>
+              <Button onClick={() => setEditField("picture")}>ערוך</Button>
+            </>
           )}
         </div>
-
-        {/* העלאת תמונה */}
-        <input
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-        />
-        <Button variant="outlined" onClick={handleUpload}>
-          עדכן תמונה
-        </Button>
 
         <p>
           <strong>שם:</strong> {user.userName}
         </p>
-        <p>
-          <strong>אימייל:</strong> {user.email}
-        </p>
+        <div>
+          <label className="label-bold-myprofile">אימייל:</label>
+          {editField === "email" ? (
+            <>
+              <input
+                type="email"
+                value={user.email}
+                onChange={(e) => setUser({ ...user, email: e.target.value })}
+              />
+              <Button onClick={() => handleFieldUpdate("email")}>עדכן</Button>
+            </>
+          ) : (
+            <>
+              <span>{user.email}</span>
+              <Button onClick={() => setEditField("email")}>ערוך</Button>
+            </>
+          )}
+        </div>
         <p>
           <strong>תעודת זהות:</strong> {user.idnumber}
         </p>
@@ -118,7 +140,7 @@ const MyProfilePage = () => {
           <strong>מגדר:</strong> {user.gender}
         </p>
         <div>
-          <label>כתובת:</label>
+          <label className="label-bold-myprofile">כתובת:</label>
           {editField === "address" ? (
             <>
               <input
@@ -135,9 +157,24 @@ const MyProfilePage = () => {
             </>
           )}
         </div>
-        <p>
-          <strong>בית ספר:</strong> {user.school || "לא תלמיד"}
-        </p>
+        <div>
+          <label className="label-bold-myprofile">בית ספר:</label>
+          {editField === "school" ? (
+            <>
+              <input
+                type="text"
+                value={user.school || ""}
+                onChange={(e) => setUser({ ...user, school: e.target.value })}
+              />
+              <Button onClick={() => handleFieldUpdate("school")}>עדכן</Button>
+            </>
+          ) : (
+            <>
+              <span>{user.school || "לא תלמיד"}</span>
+              <Button onClick={() => setEditField("school")}>ערוך</Button>
+            </>
+          )}
+        </div>
         <p>
           <strong>תאריך לידה:</strong>{" "}
           {new Date(user.birthdate).toLocaleDateString("he-IL")}
