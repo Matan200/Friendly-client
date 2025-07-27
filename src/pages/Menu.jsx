@@ -76,11 +76,11 @@ const MenuBar = () => {
 
         {/* ✅ החלפה של ניווט רגיל ב־handleDonateClick */}
         <button onClick={handleDonateClick} className="menu-item">
-          Donate
+          תרומה לקהילה
         </button>
 
         <button onClick={logoutFunc} className="logout-button">
-          Logout
+          התנתק
         </button>
       </nav>
       {/* ✅ הוספה – חלון popup */}
