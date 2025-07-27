@@ -208,7 +208,7 @@ const PostsPage = () => {
           maxAge: filterMaxAge,
           // subject: filterSubject,
           gender: filterGender,
-          usertype: usertype,
+          //usertype: usertype,
         },
       });
       alert("after the back");
