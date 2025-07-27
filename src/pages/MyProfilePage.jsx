@@ -113,10 +113,10 @@ const MyProfilePage = () => {
         </div>
 
         <p>
-          <strong>שם:</strong> {user.userName}
+          <strong className="label-bold-myprofile">שם:</strong> {user.userName}
         </p>
         <div>
-          <label className="label-bold-myprofile">אימייל:</label>
+          <label className="label-bold-myprofile">אימייל: </label>
           {editField === "email" ? (
             <>
               <input
@@ -134,13 +134,19 @@ const MyProfilePage = () => {
           )}
         </div>
         <p>
-          <strong>תעודת זהות:</strong> {user.idnumber}
+          <strong className="label-bold-myprofile">תעודת זהות:</strong>{" "}
+          {user.idnumber}
         </p>
         <p>
-          <strong>מגדר:</strong> {user.gender}
+          <strong className="label-bold-myprofile">מגדר:</strong>{" "}
+          {user.gender === "MALE"
+            ? "זכר"
+            : user.gender === "FEMALE"
+            ? "נקבה"
+            : "אחר"}
         </p>
         <div>
-          <label className="label-bold-myprofile">כתובת:</label>
+          <label className="label-bold-myprofile">כתובת: </label>
           {editField === "address" ? (
             <>
               <input
@@ -158,7 +164,7 @@ const MyProfilePage = () => {
           )}
         </div>
         <div>
-          <label className="label-bold-myprofile">בית ספר:</label>
+          <label className="label-bold-myprofile">בית ספר: </label>
           {editField === "school" ? (
             <>
               <input
@@ -176,11 +182,12 @@ const MyProfilePage = () => {
           )}
         </div>
         <p>
-          <strong>תאריך לידה:</strong>{" "}
+          <strong className="label-bold-myprofile">תאריך לידה:</strong>{" "}
           {new Date(user.birthdate).toLocaleDateString("he-IL")}
         </p>
         <p>
-          <strong>גיל:</strong> {calculateAge(user.birthdate)}
+          <strong className="label-bold-myprofile">גיל:</strong>{" "}
+          {calculateAge(user.birthdate)}
         </p>
       </div>
     </div>
