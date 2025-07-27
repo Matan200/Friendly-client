@@ -206,7 +206,7 @@ const SignUpPage = () => {
         </div>
         <h1>הרשמה</h1>
         <div className="input-box">
-          <span>אימייל</span>
+          <span class="bold-text">אימייל</span>
           <div className="input-with-tooltip">
             <input
               type="text"
@@ -225,7 +225,7 @@ const SignUpPage = () => {
         </div>
 
         <div className="input-box">
-          <span>תעודת זהותd</span>
+          <span class="bold-text">תעודת זהות</span>
           <div className="input-with-tooltip">
             <input
               type="text"
@@ -244,7 +244,7 @@ const SignUpPage = () => {
         </div>
 
         <div className="gender-radio">
-          <span>מגדר</span>
+          <span class="bold-text">מגדר</span>
           <label>
             <input
               type="radio"
@@ -279,7 +279,7 @@ const SignUpPage = () => {
         </div>
 
         <div className="input-box">
-          <span>כתובת</span>
+          <span class="bold-text">כתובת</span>
           <div className="input-with-tooltip">
             <input
               type="text"
@@ -298,7 +298,7 @@ const SignUpPage = () => {
         </div>
 
         <div className="input-box">
-          <span>תאריך לידה</span>
+          <span class="bold-text">תאריך לידה</span>
           <input
             type="date"
             name="birthdate"
@@ -310,7 +310,7 @@ const SignUpPage = () => {
 
         {isUnderage && (
           <div className="input-box">
-            <span>בית ספר</span>
+            <span class="bold-text">בית ספר</span>
             <input
               type="text"
               name="school"
