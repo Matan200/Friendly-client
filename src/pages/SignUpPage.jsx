@@ -120,7 +120,7 @@ const SignUpPage = () => {
       } else if (res.data.existId) {
         setErrors({ idnumber: res.data.message });
       } else {
-        alert("משתמש נוצר בהצלחה!");
+        // alert("משתמש נוצר בהצלחה!");
         const age =
           new Date().getFullYear() - new Date(formData.birthdate).getFullYear();
         const userType = age < 18 ? "student" : "adult";

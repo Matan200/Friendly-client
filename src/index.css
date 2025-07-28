@@ -1,13 +1,40 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+/* עיצוב כפתור הנגישות של Nagishli */
+#nlap,
+.nlap,
+[id*="nagish"],
+[class*="nagish"],
+[id*="nlap"],
+[class*="nlap"] {
+  bottom: 20px !important;
+  top: auto !important;
+  border-radius: 50% !important;
+  width: 60px !important;
+  height: 60px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: fixed !important;
+  z-index: 999999 !important;
+}
+
+/* עיצוב האייקון בתוך הכפתור */
+#nlap .nlap-icon,
+.nlap .nlap-icon,
+[id*="nagish"] .nlap-icon,
+[class*="nagish"] .nlap-icon {
+  border-radius: 50% !important;
 }

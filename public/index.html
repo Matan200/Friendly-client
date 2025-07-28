@@ -35,8 +35,82 @@
     -->
     <title>FRIENDLY - חברים אמיתיים</title>
 
-    <!-- Nagishli Accessibility Script -->
-    <script src="%PUBLIC_URL%/nagishli.js"></script>
+    <!-- UserWay Accessibility Widget -->
+    <script
+      src="https://cdn.userway.org/widget.js"
+      data-account="xOIBo93xMM"
+    ></script>
+
+    <!-- CSS להזזת UserWay למטה -->
+    <style>
+      /* הזזת כפתור UserWay למטה */
+      #userway-widget {
+        bottom: 20px !important;
+        top: auto !important;
+      }
+
+      /* אם זה לא עובד, ננסה עם הסלקטור הספציפי */
+      [id*="userway"] {
+        bottom: 20px !important;
+        top: auto !important;
+      }
+
+      /* עוד ניסיון */
+      iframe[src*="userway"] {
+        bottom: 20px !important;
+        top: auto !important;
+      }
+    </style>
+
+    <!-- JavaScript להזזת UserWay למטה -->
+    <script>
+      function moveUserWayWidget() {
+        // חיפוש כל האלמנטים האפשריים של UserWay
+        const selectors = [
+          "#userway-widget",
+          '[id*="userway"]',
+          '[class*="userway"]',
+          'iframe[src*="userway"]',
+          "div[data-userway]",
+        ];
+
+        let moved = false;
+        selectors.forEach((selector) => {
+          const elements = document.querySelectorAll(selector);
+          elements.forEach((element) => {
+            if (element) {
+              element.style.setProperty("bottom", "20px", "important");
+              element.style.setProperty("top", "auto", "important");
+              console.log("UserWay widget moved to bottom:", selector);
+              moved = true;
+            }
+          });
+        });
+
+        return moved;
+      }
+
+      // המתנה לטעינת UserWay ואז הזזה
+      window.addEventListener("load", function () {
+        setTimeout(moveUserWayWidget, 1000);
+        setTimeout(moveUserWayWidget, 2000);
+        setTimeout(moveUserWayWidget, 3000);
+
+        // MutationObserver לעקוב אחרי הוספת UserWay
+        const observer = new MutationObserver(function (mutations) {
+          mutations.forEach(function (mutation) {
+            if (mutation.type === "childList") {
+              setTimeout(moveUserWayWidget, 100);
+            }
+          });
+        });
+
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true,
+        });
+      });
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

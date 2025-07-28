@@ -45,15 +45,43 @@ const MyProfilePage = () => {
 
   const handleFieldUpdate = async (field) => {
     try {
-      const response = await axios.put(`${API_BASE}/api/users/update`, {
-        email: user.email,
+      const updateData = {
         [field]: user[field],
-      });
+      };
+
+      // אם משנים מייל, שולחים את המייל הישן כ-currentEmail
+      if (field === "email") {
+        updateData.currentEmail = userId; // המייל המקורי
+        updateData.email = user[field]; // המייל החדש
+      } else {
+        updateData.email = userId; // המייל הנוכחי למציאת המשתמש
+      }
+
+      const response = await axios.put(
+        `${API_BASE}/api/users/update`,
+        updateData
+      );
       setUser(response.data); // עדכון מצב הפרופיל עם הערכים החדשים
+
+      // אם עדכנו מייל, צריך לעדכן גם את ה-localStorage
+      if (field === "email") {
+        const storedUser = localStorage.getItem("editor");
+        if (storedUser) {
+          const userData = JSON.parse(storedUser);
+          userData.email = response.data.email; // עדכון המייל ב-localStorage
+          localStorage.setItem("editor", JSON.stringify(userData));
+          console.log(
+            "localStorage updated with new email:",
+            response.data.email
+          );
+        }
+      }
+
       setEditField(null); // סגירת מצב העריכה
       alert("השדה עודכן בהצלחה!");
     } catch (error) {
       console.error("שגיאה בעדכון השדה:", error);
+      alert("שגיאה בעדכון השדה");
     }
   };
   const handleFileChange = (e) => {

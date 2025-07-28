@@ -159,7 +159,7 @@ const PostsPage = () => {
       const response = await axios.get(
         `${API_BASE}/api/users/findByEmail/${email}`
       );
-      alert(response);
+      // alert(response);
       const userid = response.data._id; // ה-`_id` של המשתמש
 
       return userid; // מחזיר את ה-ID של המשתמש
@@ -181,7 +181,7 @@ const PostsPage = () => {
         `${API_BASE}/api/posts/${postId}/comments`,
         { text: comment, email: userId }
       );
-      alert(response.data);
+      // alert(response.data);
 
       const updatedPost = response.data;
       setPosts((prevPosts) =>

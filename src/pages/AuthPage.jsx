@@ -150,7 +150,7 @@ const AuthPage = () => {
       } else if (res.data.existId) {
         setErrors({ idnumber: res.data.message });
       } else {
-        alert("משתמש נוצר בהצלחה!");
+        // alert("משתמש נוצר בהצלחה!");
         const age =
           new Date().getFullYear() -
           new Date(signupData.birthdate).getFullYear();
@@ -269,7 +269,7 @@ const AuthPage = () => {
             sx={{
               fontSize: { xs: "3rem", md: "4rem" },
               fontWeight: "bold",
-              color: "#ffffff",
+              color: "#c2a5fbff",
               textShadow: "3px 3px 6px rgba(0,0,0,0.5)",
               letterSpacing: 2,
               margin: 0,

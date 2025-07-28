@@ -40,7 +40,7 @@ const MyPosts = () => {
         );
 
         console.log("✅ הפוסטים של המשתמש:", myPosts);
-        alert(myPosts.length);
+        // alert(myPosts.length);
         setUserPosts(myPosts);
       } catch (error) {
         console.error("❌ שגיאה בשליפת פוסטים:", error);

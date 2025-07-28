@@ -1,7 +1,7 @@
 .profile-container {
   max-width: 500px;
   margin: 80px auto; /* יותר רווח מהחלק העליון */
-  background: linear-gradient(135deg, #d12424, #f05a28, #ff66cc, #8e2de2);
+  background: linear-gradient(135deg, #f29898, #e48565, #ff66cc, #bf88f0);
   padding: 40px 30px;
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);

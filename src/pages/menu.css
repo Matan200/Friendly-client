@@ -3,7 +3,7 @@
   background-color: #1e293b;
   padding: 15px 20px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 100%;
   position: fixed;
@@ -18,11 +18,15 @@
   font-size: 24px;
   font-weight: bold;
   color: #ffffff;
+  position: absolute;
+  right: 20px;
 }
 
 .menu-nav {
   display: flex;
   gap: 20px;
+  justify-content: center;
+  align-items: center;
 }
 
 /* כפתורי תפריט */
@@ -34,6 +38,7 @@
   cursor: pointer;
   font-size: 14px;
   padding: 8px 12px;
+  white-space: nowrap;
 }
 
 .menu-item:hover,
@@ -48,6 +53,8 @@
   flex-direction: column;
   cursor: pointer;
   gap: 5px;
+  position: absolute;
+  left: 20px;
 }
 
 .hamburger div {
