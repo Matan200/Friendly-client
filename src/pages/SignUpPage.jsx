@@ -151,11 +151,36 @@ const SignUpPage = () => {
     }
   };
 
-  const handlePopupSubmit = () => {
-    handleCreateUser();
+const handlePopupSubmit = () => {
+  const isMainFormValid = validateFields(); // בודק את הטופס הראשי
 
-    //setShowPopup(false);
-  };
+  const popupErrors = {};
+  if (!popupData.userName.trim()) {
+    popupErrors.userName = "User Name is required";
+  }
+  if (!popupData.password.trim()) {
+    popupErrors.password = "Password is required";
+  } else if (popupData.password.length < 9 || isNaN(popupData.password)) {
+    popupErrors.password = "סיסמא חייבת להכיל לפחות 9 ספרות";
+  }
+
+  if (Object.keys(popupErrors).length > 0 || !isMainFormValid) {
+    setErrors({ ...errors, ...popupErrors }); // איחוד שגיאות
+    return; // לא סותמים את הפופאפ
+  }
+
+  setShowPopup(false); // ✅ הכל תקין – סגור את הפופאפ
+  handleCreateUser();  // צור את המשתמש
+};
+
+
+
+  
+  // const handlePopupSubmit = () => {
+  //   handleCreateUser();
+
+  //   //setShowPopup(false);
+  // };
   const handleAvatarSelect = (avatar) => {
     setSelectedAvatar(avatar);
     setUploadedImage(null); // reset if previously uploaded
