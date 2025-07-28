@@ -53,33 +53,86 @@ const MenuBar = () => {
       </div>
 
       <nav className={`menu-nav ${menuOpen ? "open" : ""}`}>
-        <button onClick={() => navigate("/whoarewe")} className="menu-item">
+        <button
+          onClick={() => {
+            navigate("/whoarewe");
+            setMenuOpen(false);
+          }}
+          className="menu-item"
+        >
           מי אנחנו?
         </button>
-        <button onClick={() => navigate("/posts")} className="menu-item">
+
+        <button
+          onClick={() => {
+            navigate("/posts");
+            setMenuOpen(false);
+          }}
+          className="menu-item"
+        >
           פוסטים
         </button>
-        <button onClick={() => navigate("/events")} className="menu-item">
+
+        <button
+          onClick={() => {
+            navigate("/events");
+            setMenuOpen(false);
+          }}
+          className="menu-item"
+        >
           אירועים
         </button>
-        <button onClick={() => navigate("/myposts")} className="menu-item">
+
+        <button
+          onClick={() => {
+            navigate("/myposts");
+            setMenuOpen(false);
+          }}
+          className="menu-item"
+        >
           השיתופים שלי
         </button>
-        <button onClick={() => navigate("/alumni")} className="menu-item">
+
+        <button
+          onClick={() => {
+            navigate("/alumni");
+            setMenuOpen(false);
+          }}
+          className="menu-item"
+        >
           הבוגרים שלנו
         </button>
-        <button onClick={() => navigate("/myprofile")} className="menu-item">
+
+        <button
+          onClick={() => {
+            navigate("/myprofile");
+            setMenuOpen(false);
+          }}
+          className="menu-item"
+        >
           הפרופיל שלי
         </button>
         {/* <button onClick={() => navigate("/donate")} className="menu-item">Donate</button> */}
         {/* <button onClick={logoutFunc} className="logout-button">Logout</button> */}
 
         {/* ✅ החלפה של ניווט רגיל ב־handleDonateClick */}
-        <button onClick={handleDonateClick} className="menu-item">
+        <button
+          onClick={() => {
+            handleDonateClick();
+            setMenuOpen(false);
+          }}
+          className="menu-item"
+        >
           תרומה לקהילה
         </button>
 
-        <button onClick={logoutFunc} className="logout-button">
+        <button
+          onClick={() => {
+            logoutFunc();
+            setMenuOpen(false);
+          }}
+          className="logout-button"
+        >
           התנתק
         </button>
       </nav>
