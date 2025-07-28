@@ -121,7 +121,11 @@ const SignUpPage = () => {
       });
       if (res.data.existMail) {
         setErrors({ email: res.data.message });
-      } else {
+      } 
+      else if (res.data.existId) {
+  setErrors({ idnumber: res.data.message });
+}
+      else {
         alert("User successfully created!");
         const age =
           new Date().getFullYear() - new Date(formData.birthdate).getFullYear();
@@ -379,10 +383,10 @@ const SignUpPage = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handlePopupSubmit} color="primary">
-            Submit
+            רשום אותי
           </Button>
           <Button onClick={() => setShowPopup(false)} color="secondary">
-            Cancel
+            ביטול
           </Button>
         </DialogActions>
       </Dialog>
