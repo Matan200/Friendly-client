@@ -7,11 +7,23 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  Tooltip,
+  Typography,
+  Box,
+  Alert,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Checkbox,
+  Grid,
+  Paper,
+  Divider,
   IconButton,
+  Tooltip,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline"; // Import help icon
+import { useNavigate, Link } from "react-router-dom";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import "./signup.css";
 const API_BASE = process.env.REACT_APP_API || "http://localhost:4000";
 
@@ -27,7 +39,7 @@ const SignUpPage = () => {
   const [popupData, setPopupData] = useState({
     userName: "",
     password: "",
-  }); // שדות לחלונית ה-Popup
+  });
   const avatarOptions = [
     "/images/avatar1.jpg",
     "/images/avatar2.jpg",
@@ -37,7 +49,7 @@ const SignUpPage = () => {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [errors, setErrors] = useState({});
   const [isUnderage, setIsUnderage] = useState(false);
-  const [showPopup, setShowPopup] = useState(false); // מצב להצגת ה-Popup
+  const [showPopup, setShowPopup] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [uploadedImage, setUploadedImage] = useState(null);
   const navigate = useNavigate();
@@ -65,53 +77,37 @@ const SignUpPage = () => {
 
   const validateFields = () => {
     const newErrors = {};
-    if (!formData.email.trim()) newErrors.email = "Email is required";
-    if (!formData.idnumber.trim()) newErrors.idnumber = "Id is required";
+    if (!formData.email.trim()) newErrors.email = "אימייל חובה";
+    if (!formData.idnumber.trim()) newErrors.idnumber = "תעודת זהות חובה";
     else if (formData.idnumber.length !== 9 || isNaN(formData.idnumber)) {
       newErrors.idnumber = "תעודת זהות חייבת להכיל בדיוק 9 ספרות";
     }
-
-    // if (!popupData.password.trim()) {
-    //   newErrors.password = "Password is required";
-    // } else if (popupData.password.length < 9 || isNaN(popupData.password)) {
-    //   newErrors.password = "סיסמא חייבת להכיל לפחות 9 ספרות";
-    // }
-    if (!formData.gender.trim()) newErrors.gender = "Gender is required";
-    if (!formData.address.trim()) newErrors.address = "Address is required";
-    if (!formData.birthdate.trim())
-      newErrors.birthdate = "Birthdate is required";
+    if (!formData.gender.trim()) newErrors.gender = "מגדר חובה";
+    if (!formData.address.trim()) newErrors.address = "כתובת חובה";
+    if (!formData.birthdate.trim()) newErrors.birthdate = "תאריך לידה חובה";
     if (isUnderage && !formData.school.trim())
-      newErrors.school = "School name is required for underage users";
-    if (!acceptTerms) newErrors.acceptTerms = "You must accept the terms";
+      newErrors.school = "שם בית ספר חובה למשתמשים מתחת לגיל 18";
+    if (!acceptTerms) newErrors.acceptTerms = "חובה לאשר את התנאים";
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // מחזיר true אם אין שגיאות
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleCreateUser = async () => {
     if (!popupData.userName.trim() || !popupData.password.trim()) {
       setErrors({
-        userName: !popupData.userName.trim() ? "User Name is required" : "",
-        password: !popupData.password.trim() ? "Password is required" : "",
+        userName: !popupData.userName.trim() ? "שם משתמש חובה" : "",
+        password: !popupData.password.trim() ? "סיסמה חובה" : "",
       });
-      return; // עצור את הפעולה אם אחד מהשדות ריקים
+      return;
     }
 
-    // בדיקה אם הסיסמא עומדת בדרישות
     if (popupData.password.length < 9 || isNaN(popupData.password)) {
       setErrors({
         password: "סיסמא חייבת להכיל לפחות 9 ספרות",
       });
-      return; // עצור את הפעולה אם הסיסמא לא עומדת בדרישות
+      return;
     }
-
-    // if (!popupData.userName.trim() || !popupData.password.trim()) {
-    //   setErrors({
-    //     userName: !popupData.userName.trim() ? "User Name is required" : "",
-    //     password: !popupData.password.trim() ? "Password is required" : "",
-    //   });
-    //   return;
-    // }
 
     try {
       const res = await axios.post(`${API_BASE}/api/users/signup`, {
@@ -121,12 +117,10 @@ const SignUpPage = () => {
       });
       if (res.data.existMail) {
         setErrors({ email: res.data.message });
-      } 
-      else if (res.data.existId) {
-  setErrors({ idnumber: res.data.message });
-}
-      else {
-        alert("User successfully created!");
+      } else if (res.data.existId) {
+        setErrors({ idnumber: res.data.message });
+      } else {
+        alert("משתמש נוצר בהצלחה!");
         const age =
           new Date().getFullYear() - new Date(formData.birthdate).getFullYear();
         const userType = age < 18 ? "student" : "adult";
@@ -134,9 +128,7 @@ const SignUpPage = () => {
           email: formData.email,
           userType: userType,
         };
-
         localStorage.setItem("editor", JSON.stringify(userData));
-        // localStorage.setItem("editor", formData.email, userType);
         navigate("/posts");
       }
     } catch (error) {
@@ -151,39 +143,30 @@ const SignUpPage = () => {
     }
   };
 
-const handlePopupSubmit = () => {
-  const isMainFormValid = validateFields(); // בודק את הטופס הראשי
+  const handlePopupSubmit = () => {
+    const isMainFormValid = validateFields();
+    const popupErrors = {};
+    if (!popupData.userName.trim()) {
+      popupErrors.userName = "שם משתמש חובה";
+    }
+    if (!popupData.password.trim()) {
+      popupErrors.password = "סיסמה חובה";
+    } else if (popupData.password.length < 9 || isNaN(popupData.password)) {
+      popupErrors.password = "סיסמא חייבת להכיל לפחות 9 ספרות";
+    }
 
-  const popupErrors = {};
-  if (!popupData.userName.trim()) {
-    popupErrors.userName = "User Name is required";
-  }
-  if (!popupData.password.trim()) {
-    popupErrors.password = "Password is required";
-  } else if (popupData.password.length < 9 || isNaN(popupData.password)) {
-    popupErrors.password = "סיסמא חייבת להכיל לפחות 9 ספרות";
-  }
+    if (Object.keys(popupErrors).length > 0 || !isMainFormValid) {
+      setErrors({ ...errors, ...popupErrors });
+      return;
+    }
 
-  if (Object.keys(popupErrors).length > 0 || !isMainFormValid) {
-    setErrors({ ...errors, ...popupErrors }); // איחוד שגיאות
-    return; // לא סותמים את הפופאפ
-  }
+    setShowPopup(false);
+    handleCreateUser();
+  };
 
-  setShowPopup(false); // ✅ הכל תקין – סגור את הפופאפ
-  handleCreateUser();  // צור את המשתמש
-};
-
-
-
-  
-  // const handlePopupSubmit = () => {
-  //   handleCreateUser();
-
-  //   //setShowPopup(false);
-  // };
   const handleAvatarSelect = (avatar) => {
     setSelectedAvatar(avatar);
-    setUploadedImage(null); // reset if previously uploaded
+    setUploadedImage(null);
   };
 
   const handleImageUpload = (e) => {
@@ -192,226 +175,615 @@ const handlePopupSubmit = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setUploadedImage(reader.result);
-        setSelectedAvatar(null); // reset if previously selected avatar
+        setSelectedAvatar(null);
       };
       reader.readAsDataURL(file);
     }
   };
+
   return (
-    <div className="container">
-      <form onSubmit={handleSubmit}>
-        <div className="avatar-section">
-          <p>בחר תמונה אישית או אווטאר:</p>
+    <div className="signup-page">
+      {/* כותרת ראשית זהה לדף התחברות */}
+      <Box
+        className="signup-page-header"
+        sx={{
+          textAlign: "center",
+          marginBottom: "-35px",
+          marginTop: "-20px",
+          padding: 3,
+          background:
+            "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 100%)",
+          backdropFilter: "blur(2px)",
+          borderRadius: 3,
+          border: "1px solid rgba(255,255,255,0.3)",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
+        }}
+      >
+        <Typography
+          variant="h1"
+          component="h1"
+          sx={{
+            fontSize: { xs: "3rem", md: "4rem" },
+            fontWeight: "bold",
+            color: "#ffffff",
+            textShadow: "3px 3px 6px rgba(0,0,0,0.5)",
+            letterSpacing: 2,
+            margin: 0,
+            filter: "none",
+          }}
+        >
+          FRIENDLY ✨
+        </Typography>
+        <Typography
+          variant="h5"
+          sx={{
+            color: "rgba(255,255,255,0.9)",
+            fontWeight: 300,
+            marginTop: 1,
+            textShadow: "1px 1px 2px rgba(0,0,0,0.2)",
+          }}
+        >
+          חברים אמיתיים
+        </Typography>
+      </Box>
 
-          <input type="file" accept="image/*" onChange={handleImageUpload} />
+      {/* קונטיינר הטופס */}
+      <div className="container">
+        <Paper
+          elevation={20}
+          sx={{
+            padding: 4,
+            borderRadius: 4,
+            background: "rgba(255, 255, 255, 0.1)",
+            backdropFilter: "blur(20px)",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          {/* כותרת הטופס */}
+          <Box sx={{ textAlign: "center", marginBottom: 2 }}>
+            <Typography
+              variant="h4"
+              component="h2"
+              sx={{
+                fontWeight: "bold",
+                color: "#333",
+                marginBottom: 1,
+                fontSize: { xs: "1.5rem", md: "2rem" },
+              }}
+            >
+              איזה כיף לראות אותך כאן! 🎉
+            </Typography>
+            <Typography
+              variant="h5"
+              component="h2"
+              sx={{
+                color: "#555",
+                marginBottom: 1.5,
+                fontSize: { xs: "1.2rem", md: "1.5rem" },
+              }}
+            >
+              בואו ניצור עולם יותר טוב ביחד
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 600,
+                color: "#333",
+                marginBottom: 1,
+              }}
+            >
+              הרשמה למערכת
+            </Typography>
+          </Box>
 
-          <div className="avatar-options">
-            {avatarOptions.map((avatar, index) => (
-              <img
-                key={index}
-                src={avatar}
-                alt={`avatar-${index}`}
-                className={`avatar-img ${
-                  selectedAvatar === avatar ? "selected" : ""
-                }`}
-                onClick={() => handleAvatarSelect(avatar)}
-              />
-            ))}
-          </div>
+          {/* טופס הרשמה */}
+          <Box component="form" onSubmit={handleSubmit}>
+            {/* בחירת אווטאר */}
+            <Box sx={{ marginBottom: 3 }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  color: "#333",
+                  marginBottom: 2,
+                  textAlign: "center",
+                  fontWeight: 600,
+                }}
+              >
+                📸 בחר תמונה אישית או אווטאר
+              </Typography>
 
-          {/* Show preview */}
-          {uploadedImage && (
-            <div className="preview-img">
-              <p>תמונה שהועלתה:</p>
-              <img src={uploadedImage} alt="uploaded" />
-            </div>
-          )}
-          {selectedAvatar && (
-            <div className="preview-img">
-              <p>אווטאר שנבחר:</p>
-              <img src={selectedAvatar} alt="selected-avatar" />
-            </div>
-          )}
-        </div>
-        <h1>הרשמה</h1>
-        <div className="input-box">
-          <span class="bold-text">אימייל</span>
-          <div className="input-with-tooltip">
-            <input
-              type="text"
-              name="email"
-              placeholder="הכנס את האימייל שלך"
-              value={formData.email}
-              onChange={handleChange}
-            />
-            <Tooltip title="בבקשה הכנס אימייל תקין" arrow>
-              <IconButton>
-                <HelpOutlineIcon />
-              </IconButton>
-            </Tooltip>
-          </div>
-          {errors.email && <p className="error">{errors.email}</p>}
-        </div>
+              <Box sx={{ textAlign: "center", marginBottom: 2 }}>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  style={{
+                    padding: "8px 12px",
+                    border: "2px solid #ddd",
+                    borderRadius: "8px",
+                    backgroundColor: "#f9f9f9",
+                    fontSize: "14px",
+                    cursor: "pointer",
+                  }}
+                />
+              </Box>
 
-        <div className="input-box">
-          <span class="bold-text">תעודת זהות</span>
-          <div className="input-with-tooltip">
-            <input
-              type="text"
-              name="idnumber"
-              placeholder="הכנס את המספר זהות שלך"
-              value={formData.idnumber}
-              onChange={handleChange}
-            />
-            <Tooltip title="בבקשה הכנס 9 ספרות תעודת הזהות שלך" arrow>
-              <IconButton>
-                <HelpOutlineIcon />
-              </IconButton>
-            </Tooltip>
-          </div>
-          {errors.idnumber && <p className="error">{errors.idnumber}</p>}
-        </div>
+              <Grid
+                container
+                spacing={2}
+                justifyContent="center"
+                sx={{ marginBottom: 2 }}
+              >
+                {avatarOptions.map((avatar, index) => (
+                  <Grid item key={index}>
+                    <Box
+                      component="img"
+                      src={avatar}
+                      alt={`avatar-${index}`}
+                      onClick={() => handleAvatarSelect(avatar)}
+                      sx={{
+                        width: 70,
+                        height: 70,
+                        borderRadius: "50%",
+                        cursor: "pointer",
+                        border:
+                          selectedAvatar === avatar
+                            ? "3px solid #1976d2"
+                            : "2px solid #ddd",
+                        transition: "all 0.3s ease",
+                        "&:hover": {
+                          transform: "scale(1.1)",
+                          boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                        },
+                      }}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
 
-        <div className="gender-radio">
-          <span class="bold-text">מגדר</span>
-          <label>
-            <input
-              type="radio"
-              name="gender"
-              value="male"
-              checked={formData.gender === "male"}
-              onChange={handleChange}
-            />
-            זכר
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="gender"
-              value="female"
-              checked={formData.gender === "female"}
-              onChange={handleChange}
-            />
-            נקבה
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="gender"
-              value="other"
-              checked={formData.gender === "other"}
-              onChange={handleChange}
-            />
-            אחר
-          </label>
-          {errors.gender && <p className="error">{errors.gender}</p>}
-        </div>
+              {/* תצוגה מקדימה */}
+              {(uploadedImage || selectedAvatar) && (
+                <Box sx={{ textAlign: "center", marginTop: 2 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "#333", marginBottom: 1, fontWeight: 500 }}
+                  >
+                    {uploadedImage ? "תמונה שהועלתה:" : "אווטאר שנבחר:"}
+                  </Typography>
+                  <Box
+                    component="img"
+                    src={uploadedImage || selectedAvatar}
+                    alt="preview"
+                    sx={{
+                      width: 100,
+                      height: 100,
+                      borderRadius: "50%",
+                      border: "3px solid #1976d2",
+                      boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                    }}
+                  />
+                </Box>
+              )}
+            </Box>
 
-        <div className="input-box">
-          <span class="bold-text">כתובת</span>
-          <div className="input-with-tooltip">
-            <input
-              type="text"
-              name="address"
-              placeholder="Enter your address"
-              value={formData.address}
-              onChange={handleChange}
-            />
-            <Tooltip title="בבקשה הכנס את כתובת המגורים" arrow>
-              <IconButton>
-                <HelpOutlineIcon />
-              </IconButton>
-            </Tooltip>
-          </div>
-          {errors.address && <p className="error">{errors.address}</p>}
-        </div>
+            <Divider sx={{ marginY: 3, backgroundColor: "#ddd" }} />
 
-        <div className="input-box">
-          <span class="bold-text">תאריך לידה</span>
-          <input
-            type="date"
-            name="birthdate"
-            value={formData.birthdate}
-            onChange={handleChange}
-          />
-          {errors.birthdate && <p className="error">{errors.birthdate}</p>}
-        </div>
+            {/* שדות הטופס */}
+            <Grid container spacing={3}>
+              {/* אימייל */}
+              <Grid item xs={12} md={6}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <TextField
+                    fullWidth
+                    label="כתובת אימייל"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    variant="outlined"
+                    required
+                    error={!!errors.email}
+                    helperText={errors.email}
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: 2,
+                        background: "rgba(255, 255, 255, 0.95)",
+                        "& fieldset": {
+                          borderColor: "#ddd",
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "#1976d2",
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#1976d2",
+                        },
+                      },
+                      "& .MuiInputLabel-root": {
+                        color: "rgba(0, 0, 0, 0.7)",
+                      },
+                    }}
+                  />
+                  <Tooltip title="בבקשה הכנס אימייל תקין" arrow>
+                    <IconButton sx={{ color: "#666" }}>
+                      <HelpOutlineIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              </Grid>
 
-        {isUnderage && (
-          <div className="input-box">
-            <span class="bold-text">בית ספר</span>
-            <input
-              type="text"
-              name="school"
-              placeholder="הכנס את בית הספר שלך"
-              value={formData.school}
-              onChange={handleChange}
-            />
-            {errors.school && <p className="error">{errors.school}</p>}
-          </div>
-        )}
+              {/* תעודת זהות */}
+              <Grid item xs={12} md={6}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <TextField
+                    fullWidth
+                    label="תעודת זהות"
+                    name="idnumber"
+                    value={formData.idnumber}
+                    onChange={handleChange}
+                    variant="outlined"
+                    required
+                    error={!!errors.idnumber}
+                    helperText={errors.idnumber}
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: 2,
+                        background: "rgba(255, 255, 255, 0.95)",
+                        "& fieldset": {
+                          borderColor: "#ddd",
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "#1976d2",
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#1976d2",
+                        },
+                      },
+                      "& .MuiInputLabel-root": {
+                        color: "rgba(0, 0, 0, 0.7)",
+                      },
+                    }}
+                  />
+                  <Tooltip title="בבקשה הכנס 9 ספרות תעודת הזהות שלך" arrow>
+                    <IconButton sx={{ color: "#666" }}>
+                      <HelpOutlineIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              </Grid>
 
-        <div className="terms-container">
-          <label htmlFor="terms">
-            <div className="terms-box">
-              <p>
-                כללי – בהרשמתך למערכת, הנך מסכים לתנאי התקנון ומתחייב לפעול
-                בהתאם לכללי השימוש.
-              </p>
-            </div>
-          </label>
-          <div className="accept-terms">
-            <input
-              type="checkbox"
-              id="terms"
-              checked={acceptTerms}
-              onChange={(e) => setAcceptTerms(e.target.checked)}
-            />
-            <label htmlFor="terms">מאשר/ת שקראתי</label>
-            {errors.acceptTerms && (
-              <p className="error">{errors.acceptTerms}</p>
-            )}
-          </div>
-        </div>
+              {/* כתובת */}
+              <Grid item xs={12} md={6}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <TextField
+                    fullWidth
+                    label="כתובת מגורים"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
+                    variant="outlined"
+                    required
+                    error={!!errors.address}
+                    helperText={errors.address}
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: 2,
+                        background: "rgba(255, 255, 255, 0.95)",
+                        "& fieldset": {
+                          borderColor: "#ddd",
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "#1976d2",
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#1976d2",
+                        },
+                      },
+                      "& .MuiInputLabel-root": {
+                        color: "rgba(0, 0, 0, 0.7)",
+                      },
+                    }}
+                  />
+                  <Tooltip title="בבקשה הכנס את כתובת המגורים" arrow>
+                    <IconButton sx={{ color: "#666" }}>
+                      <HelpOutlineIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              </Grid>
 
-        <Button type="submit" className="btn">
-          רשום אותי
-        </Button>
-      </form>
+              {/* תאריך לידה */}
+              <Grid item xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="תאריך לידה"
+                  name="birthdate"
+                  type="date"
+                  value={formData.birthdate}
+                  onChange={handleChange}
+                  variant="outlined"
+                  required
+                  error={!!errors.birthdate}
+                  helperText={errors.birthdate}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: 2,
+                      background: "rgba(255, 255, 255, 0.95)",
+                      "& fieldset": {
+                        borderColor: "#ddd",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "#1976d2",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#1976d2",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "rgba(0, 0, 0, 0.7)",
+                    },
+                  }}
+                />
+              </Grid>
 
-      {/* Popup Dialog */}
-      <Dialog open={showPopup} onClose={() => setShowPopup(false)}>
-        <DialogTitle>Complete Registration</DialogTitle>
-        <DialogContent>
+              {/* בית ספר (אם קטין) */}
+              {isUnderage && (
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="בית ספר"
+                    name="school"
+                    value={formData.school}
+                    onChange={handleChange}
+                    variant="outlined"
+                    required
+                    error={!!errors.school}
+                    helperText={errors.school}
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: 2,
+                        background: "rgba(255, 255, 255, 0.95)",
+                        "& fieldset": {
+                          borderColor: "#ddd",
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "#1976d2",
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#1976d2",
+                        },
+                      },
+                      "& .MuiInputLabel-root": {
+                        color: "rgba(0, 0, 0, 0.7)",
+                      },
+                    }}
+                  />
+                </Grid>
+              )}
+
+              {/* מגדר */}
+              <Grid item xs={12}>
+                <FormControl component="fieldset" error={!!errors.gender}>
+                  <FormLabel
+                    component="legend"
+                    sx={{ color: "white", "&.Mui-focused": { color: "white" } }}
+                  >
+                    מגדר
+                  </FormLabel>
+                  <RadioGroup
+                    row
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleChange}
+                    sx={{ justifyContent: "center" }}
+                  >
+                    <FormControlLabel
+                      value="male"
+                      control={<Radio sx={{ color: "white" }} />}
+                      label="זכר"
+                      sx={{ color: "white" }}
+                    />
+                    <FormControlLabel
+                      value="female"
+                      control={<Radio sx={{ color: "white" }} />}
+                      label="נקבה"
+                      sx={{ color: "white" }}
+                    />
+                    <FormControlLabel
+                      value="other"
+                      control={<Radio sx={{ color: "white" }} />}
+                      label="אחר"
+                      sx={{ color: "white" }}
+                    />
+                  </RadioGroup>
+                  {errors.gender && (
+                    <Typography variant="caption" sx={{ color: "#f44336" }}>
+                      {errors.gender}
+                    </Typography>
+                  )}
+                </FormControl>
+              </Grid>
+
+              {/* תנאי השימוש */}
+              <Grid item xs={12}>
+                <Box
+                  sx={{
+                    background: "rgba(255, 255, 255, 0.1)",
+                    padding: 2,
+                    borderRadius: 2,
+                    border: "1px solid rgba(255, 255, 255, 0.3)",
+                  }}
+                >
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "white", marginBottom: 2 }}
+                  >
+                    כללי – בהרשמתך למערכת, הנך מסכים לתנאי התקנון ומתחייב לפעול
+                    בהתאם לכללי השימוש.
+                  </Typography>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={acceptTerms}
+                        onChange={(e) => setAcceptTerms(e.target.checked)}
+                        sx={{ color: "white" }}
+                      />
+                    }
+                    label="מאשר/ת שקראתי ומסכים/ה לתנאים"
+                    sx={{ color: "white" }}
+                  />
+                  {errors.acceptTerms && (
+                    <Typography
+                      variant="caption"
+                      sx={{ color: "#f44336", display: "block" }}
+                    >
+                      {errors.acceptTerms}
+                    </Typography>
+                  )}
+                </Box>
+              </Grid>
+            </Grid>
+
+            {/* כפתור הרשמה */}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              size="large"
+              sx={{
+                marginTop: 3,
+                padding: 1.5,
+                borderRadius: 2,
+                fontSize: "1.2rem",
+                fontWeight: "bold",
+                background: "rgba(255, 255, 255, 0.2)",
+                backdropFilter: "blur(10px)",
+                border: "1px solid rgba(255, 255, 255, 0.3)",
+                color: "white",
+                "&:hover": {
+                  background: "rgba(255, 255, 255, 0.3)",
+                  transform: "translateY(-2px)",
+                  boxShadow: "0 6px 20px rgba(0,0,0,0.2)",
+                },
+                transition: "all 0.3s ease",
+              }}
+            >
+              🎉 הצטרף אלינו
+            </Button>
+
+            {/* קישור לחזרה להתחברות */}
+            <Box sx={{ textAlign: "center", marginTop: 3 }}>
+              <Typography
+                variant="body1"
+                sx={{
+                  marginBottom: 2,
+                  color: "rgba(255, 255, 255, 0.9)",
+                  textShadow: "1px 1px 2px rgba(0,0,0,0.2)",
+                }}
+              >
+                כבר יש לך חשבון? 🤔
+              </Typography>
+              <Button
+                component={Link}
+                to="/"
+                variant="outlined"
+                size="large"
+                sx={{
+                  padding: "12px 30px",
+                  borderRadius: 2,
+                  fontSize: "1.1rem",
+                  fontWeight: "bold",
+                  borderColor: "rgba(255, 255, 255, 0.5)",
+                  color: "white",
+                  background: "rgba(255, 255, 255, 0.1)",
+                  "&:hover": {
+                    borderColor: "rgba(255, 255, 255, 0.8)",
+                    color: "white",
+                    background: "rgba(255, 255, 255, 0.2)",
+                    transform: "translateY(-2px)",
+                  },
+                  transition: "all 0.3s ease",
+                }}
+              >
+                🔙 התחבר
+              </Button>
+            </Box>
+          </Box>
+        </Paper>
+      </div>
+
+      {/* Dialog לחלונית השלמת הרשמה */}
+      <Dialog
+        open={showPopup}
+        onClose={() => setShowPopup(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle
+          sx={{
+            textAlign: "center",
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            color: "white",
+          }}
+        >
+          השלמת הרשמה 🎯
+        </DialogTitle>
+        <DialogContent sx={{ padding: 3 }}>
           <TextField
             label="שם משתמש"
             name="userName"
             fullWidth
             value={popupData.userName}
             onChange={handlePopupChange}
-            // error={!!errors.userName}
+            error={!!errors.userName}
             helperText={errors.userName}
-            margin="dense"
+            margin="normal"
+            sx={{
+              marginBottom: 2,
+              "& .MuiOutlinedInput-root": {
+                borderRadius: 2,
+              },
+            }}
           />
           <TextField
-            label="סיסמא"
+            label="סיסמה"
             name="password"
             type="password"
             fullWidth
             value={popupData.password}
             onChange={handlePopupChange}
-            // error={!!errors.password}
+            error={!!errors.password}
             helperText={errors.password}
-            margin="dense"
+            margin="normal"
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                borderRadius: 2,
+              },
+            }}
           />
-          {errors.password && <p className="error">{errors.password}</p>}
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handlePopupSubmit} color="primary">
-            רשום אותי
+        <DialogActions sx={{ padding: 2, justifyContent: "center", gap: 2 }}>
+          <Button
+            onClick={handlePopupSubmit}
+            variant="contained"
+            sx={{
+              background: "linear-gradient(45deg, #667eea, #764ba2)",
+              "&:hover": {
+                background: "linear-gradient(45deg, #5a6fd8, #6b42a0)",
+              },
+            }}
+          >
+            ✅ רשום אותי
           </Button>
-          <Button onClick={() => setShowPopup(false)} color="secondary">
-            ביטול
+          <Button
+            onClick={() => setShowPopup(false)}
+            variant="outlined"
+            color="secondary"
+          >
+            ❌ ביטול
           </Button>
         </DialogActions>
       </Dialog>

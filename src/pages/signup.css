@@ -1,4 +1,4 @@
-/* עיצוב כללי */
+/* איפוס כללי */
 * {
   margin: 0;
   padding: 0;
@@ -7,18 +7,55 @@
 
 body {
   font-family: "Trebuchet MS", sans-serif;
-  background: linear-gradient(#000000, #303030);
-  color: #fff;
+  background: url("/public/images/kids2.jpg") no-repeat center center fixed;
+  background-size: cover;
+  color: #ffffffec;
+}
+
+/* עמוד ההרשמה */
+.signup-page {
+  direction: rtl;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 50px;
+}
+
+/* 🔥 אנימציות */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* כותרת עליונה */
+.signup-header {
+  text-align: center;
+  margin-bottom: 30px;
 }
 
 /* עיצוב הקונטיינר המרכזי */
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 25px;
-  background: #1f242d;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  animation: fadeInUp 0.8s ease-out;
 }
 
 /* עיצוב הטופס */

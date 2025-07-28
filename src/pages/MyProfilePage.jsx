@@ -1,4 +1,3 @@
-// הוספנו useRef ו־FormData
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Button } from "@mui/material";
@@ -63,20 +62,27 @@ const MyProfilePage = () => {
 
   const handleUpload = async () => {
     if (!newImage) return alert("בחרי תמונה קודם");
-    const formData = new FormData();
-    formData.append("email", user.email);
-    formData.append("avatar", newImage);
 
-    try {
-      const response = await axios.put(
-        `${API_BASE}/api/users/upload-avatar`,
-        formData
-      );
-      setUser((prev) => ({ ...prev, picture: response.data.newAvatar }));
-      alert("התמונה הועלתה בהצלחה!");
-    } catch (error) {
-      console.error("שגיאה בהעלאת תמונה:", error);
-    }
+    // המרה ל-base64
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const response = await axios.put(
+          `${API_BASE}/api/users/upload-avatar`,
+          {
+            email: user.email,
+            picture: reader.result,
+          }
+        );
+        setUser((prev) => ({ ...prev, picture: response.data.pictureUrl }));
+        setEditField(null);
+        alert("התמונה הועלתה בהצלחה!");
+      } catch (error) {
+        console.error("שגיאה בהעלאת תמונה:", error);
+        alert("שגיאה בהעלאת התמונה");
+      }
+    };
+    reader.readAsDataURL(newImage);
   };
 
   if (!user) return <p>טוען פרטים...</p>;

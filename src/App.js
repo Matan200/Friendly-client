@@ -3,25 +3,23 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 // import HomePage from "./pages/HomePage";
 import React from "react";
 import PostsPage from "./pages/PostsPage";
-import SignUpPage from "./pages/SignUpPage";
-import LogInPage from "./pages/LogInPage";
+import AuthPage from "./pages/AuthPage";
 import EventsForm from "./pages/Events";
 import MenuBar from "./pages/Menu";
 import DonateForm from "./pages/DonatePage";
 import MyProfilePage from "./pages/MyProfilePage";
-
-import AccessibilityButton from "./pages/AccessibilityButton";
+// import AccessibilityButton from "./pages/AccessibilityButton"; // הסרנו כי nagishli עובד גלובלית
 import TestimonialsPage from "./pages/TestimonialsPage";
 import MyPosts from "./pages/MyPosts";
 import Whoarewe from "./pages/WhoAreWe";
 function App() {
   return (
     <Router>
-      <AccessibilityButton />
+      {/* <AccessibilityButton /> */}
       {/* <MenuBar /> */}
       <Routes>
-        <Route path="/" element={<LogInPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/" element={<AuthPage />} />
+        <Route path="/signup" element={<AuthPage />} />
 
         <Route
           path="/whoarewe"
